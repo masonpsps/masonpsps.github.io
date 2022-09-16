@@ -1,10 +1,4 @@
-const savedCities = [
-    // 'Paris',
-    // 'Boston',
-    // 'Madrid',
-    // 'Houston',
-    // 'San Salvador',
-];
+let savedCities = [];
 const cityList = document.querySelector('.carousel').querySelector('ul');
 const toggleSwitch = document.querySelector('.switch input[type="checkbox"]');
 const scrollContainer = document.querySelector('.carousel');
@@ -15,8 +9,26 @@ const header = document.querySelector('.main-page');
 const mainPage = document.querySelector('.container.main-page');
 const darkenOverlay = document.querySelector('.darken-filter');
 const popupContainer = document.querySelector('.popup-container');
+const textArea = document.querySelector('.text-list textarea')
 let btns = document.querySelectorAll('.btn');
 let addBtn = null;
+
+window.onload = (e) => {
+    if(true) {      // maybe leave as light mode default
+        toggleSwitch.checked = true;
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    displayCards();
+}
+async function displayCards() {
+    cityList.innerHTML = '';
+    addCard('empty');
+    savedCities = await getFromLocalStorage();
+    console.log(savedCities);
+    
+    passCardsFromLS();
+}
 
 // WEATHER DATA handlers
 async function getWeatherData(city) {
@@ -65,7 +77,7 @@ async function addCard(city) {
         return;
     }
     let i = await getWeatherData(city);
-    console.log(i);
+    // console.log(i);
     let info = [
         i.name,        
         Math.round(i.main.temp),
@@ -102,14 +114,44 @@ async function addCard(city) {
         </li>
     `;
 }
-function initCards() {
-    savedCities.forEach(function(city) {
+function passCardsFromLS() {
+    const cityListLS = getFromLocalStorage();
+    
+    cityListLS.forEach(function(city) {
         addCard(city);
     });
-    
-    addCard('empty');
-    addBtn = document.querySelector('.weather-img #add-btn').parentElement;
 }
+// function clearCards() {
+//     cityList.innerHTML += `
+//             <li>
+//                 <div class="city-card">
+//                     <div class="city-name">Add City</div>
+//                     <div class="current-info">
+//                         <div class="weather-img" onclick="showPopup(true)">
+//                             <!-- TODO: add city placeholder img -->
+//                             <i class="fas fa-circle-plus fa-5x" id="add-btn"></i>
+//                         </div>
+//                         <!-- TODO: add local time indicator -->
+//                         <div class="temp">
+//                             <span class="curr-temp">--&deg;</span>
+//                         </div>
+//                         <div class="weather">Weather</div>
+//                             <div class="high-low">
+//                                 <div class="high-temp">
+//                                     --
+//                                     <span class="max">max</span>
+//                                 </div>
+//                                 <div class="low-temp">
+//                                     --
+//                                     <span class="min">min</span>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </li>
+//         `;
+// }
 
 // POPUP MENU handlers
 function showPopup(shouldDisplay) {     // showPopup(true) or ..(false)
@@ -169,14 +211,27 @@ function closeNav() {
     // MAKE OPEN CITY LIST SHIFT WITH SIDENAV OPEN
 }
 
-window.onload = (e) => {
-    if(true) {      // maybe leave as light mode default
-        toggleSwitch.checked = true;
-        document.documentElement.setAttribute('data-theme', 'dark');
-    }
-
+// LIST INPUT AND LS 
+function updateList() {
+    let text = $('.text-list textarea').val().split(/\n/);
+    savedCities = [];
+    text.forEach(function(line) {
+        if(/\S/.test(line)) {
+            savedCities.push($.trim(line));
+        }
+    });
+    addToLocalStorage(savedCities);
+    
+    displayCards();
 }
+function addToLocalStorage(toLS) {
+    localStorage.setItem('cities', JSON.stringify(toLS));
+}
+function getFromLocalStorage() {
+    let stored = JSON.parse(localStorage.getItem('cities'));
 
+    return stored === null ? [] : stored;
+}
 
 toggleSwitch.addEventListener('change', switchTheme, false);
 
@@ -189,11 +244,10 @@ btns.forEach(function(btn) {
     btn.addEventListener('click', function() {
         if(btn.classList.contains('submit-btn')) {
             // update city list
-            console.log('update');
+            updateList();
+            showPopup(false);
         } else if(btn.classList.contains('close-btn')) {
             showPopup(false);
         }
     });
 });
-
-initCards();
