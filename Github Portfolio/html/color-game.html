@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Game</title>
+
+    <link rel="stylesheet" href="../css/color-game.css" />
+</head>
+<body>
+    <div class="top-container">
+        <p class="description">
+            guess the color
+        </p>
+        <p class="color-rgb">
+            rgb(255, 255, 255)
+        </p>
+    </div>
+    <div class="btn-container">
+        <div class="stat-wrapper">
+            <div class="display score">Score: 
+                <span class="score-count">0</span>
+            </div>
+            <div class="tooltip display lives">Hearts: 
+                <span class="lives-count">5</span>
+                <span class="tooltip tooltiptext display next-life">
+                    Next Heart in 
+                        <br />
+                        <span class="next-life-count">3</span> 
+                    Turns
+                </span>                
+            </div>
+            <!-- <div class="tooltip"> -->
+                <button class="btn hint-btn tooltip">Hint 
+                    <span id="hint-count">(1)</span>
+                    <span class="tooltip tooltiptext display next-life">
+                        Next Hint in 
+                            <br />
+                            <span class="next-life-count">3</span> 
+                        Turns
+                    </span>  
+                </button>            
+                               
+            <!-- </div>             -->
+        </div>
+    </div>
+    <div class="btn-container">
+        <div class="btn-wrapper">
+            <button class="btn home-btn"><a href="../index.html">Home</a></button>
+            <button class="btn new-btn ">New Game</button>
+            <div class="empty"></div>
+            <div class="select-wrapper">
+                <label for="colorspace">Colorspace:</label>                    
+                <select name="colorspace" id="colorspace" onchange="changeColorspace()">
+                    <option value="rgb">RGB</option>
+                    <option value="hex">Hexadecimal</option>
+                    <option value="hsl">HSL</option>
+                </select>                    
+            </div>
+        </div>
+    </div>
+    <div class="squares-container">
+        <div class="squares-wrapper">
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+        </div>
+    </div>
+
+    <!-- TODO: add javascript logic -->
+    <script src="../js/color-game.js"></script>
+</body>
+</html>

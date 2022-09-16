@@ -1,0 +1,149 @@
+:root {
+    --navbar-background: #1a2223;
+    --text-color: #1a1a1a;
+    --navbar-text: #d3d3d3;
+    --link-hover: #d31a42;
+    --link-click: #890924;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: whitesmoke;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    width: 100;
+    height: 100%;
+}
+div {
+    border: 1px solid black;
+}
+li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+
+/* NAVBAR AND LINKS */
+nav {
+    margin: 0 auto;
+    background-color: var(--text-color);
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 10px;
+}
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    color: var(--navbar-text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo img {
+    border-radius: 50%;
+}
+.logo p {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+#nav-links {
+    list-style: none;
+    display: flex;
+}
+.nav-item a {
+    display: inline-block;
+    padding: 25px 30px;
+    text-decoration: none;
+    color: var(--navbar-text);
+}
+.nav-item a:hover {
+    background-color: var(--link-hover);
+}
+.nav-item a:active {
+    background-color: var(--link-click);
+}
+
+/* SECTION HEADERS */
+.section-header {
+    background-color: antiquewhite;
+    text-align: center;
+}
+.section-header h1 {
+    padding: 15px;
+}
+.section-header p {
+    margin-bottom: 20px;
+}
+
+/* ABOUT SECTION */
+
+.wrapper {
+    width: 95%;
+    max-width: 1000px;
+    margin: 5px auto;
+    display: flex;
+}
+.left {
+    width: 50%;
+    height: 150px;
+    padding: 2px;
+    margin: 5px;
+    border: 1px solid red;
+}
+.right {
+    width: 50%;
+    height: 150px;
+    padding: 2px;
+    margin: 5px;
+    border: 1px solid red;
+}
+.skills-list {
+    display: flex;    
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 10px 15px;
+    flex-flow: row wrap;
+}
+.skill {
+    background-color: #c9c8c5;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 0px;
+}
+
+.project {
+    width: 95%;
+    max-width: 1000px;
+    height: 300px;
+    padding: 20px;
+    margin: 10px auto;
+}
+.project-img {
+    float: left;
+    width: 30%;
+    aspect-ratio: 4/3;
+    background-color: black;
+    border-radius: 10px;
+}
+.project a {
+    background-color: lightpink;
+    border: 1px solid purple;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 5px auto;
+}

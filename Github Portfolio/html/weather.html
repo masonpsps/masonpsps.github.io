@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">  
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="../css/weather.css">
+</head>
+<body>
+    <!-- Side Nav -->
+    <nav class="sidenav" id="sidenav">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">
+            <i class="fa fa-close"></i>
+        </a>
+        <a href="#">Home</a>
+        <a href="#">XYZ</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+    <!-- End of Side Nav -->
+    <!-- Header -->
+    <header class="main-page">
+        <div class="open-icon">
+            <span onclick="openNav()"><i class="fa fa-bars"></i></span>
+        </div>
+        <div class="logo left"></div>
+        <div class="date center">Today</div>
+        <div class="display-mode-toggle right">
+            <p class="light">light</p>
+            <div class="switch-container">
+                <label class="switch" for="checkbox">
+                    <input type="checkbox" id="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <p class="dark">dark</p>
+        </div>
+    </header>
+    <!-- End of Header -->
+    <!-- Main Section -->
+    <div class="container main-page">
+        <div class="carousel">
+            <ul></ul>
+        </div>
+    </div>
+    <!-- End of Main Section -->
+
+    <div class="darken-filter"></div>
+    <div class="popup-container hidden">
+        <div class="edit-popup">
+            <div class="text-list">
+                <textarea name="city-list" id="city-list" cols="30" rows="15" placeholder="Write each city on new line&#10;Paris&#10;Boston&#10;..."></textarea>
+            </div>
+            <input type="submit" value="Update" class="btn submit-btn" />
+            <div class="btn close-btn">
+                <i class="far fa-circle-xmark fa-3x"></i>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/weather.js"></script>
+</body>
+</html>
