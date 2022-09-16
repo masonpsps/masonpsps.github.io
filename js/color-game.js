@@ -7,12 +7,16 @@ const primaryBGColor = topSection.style.backgroundColor;
 const colorspace = document.querySelector('#colorspace');
 const label = document.querySelector('label');
 const hintCounter = document.querySelector('span#hint-count');
+const livesCounter = document.querySelector('span.lives-count');
+const scoreCounter = document.querySelector('span.score-count');
+const nextHintCounter = document.querySelector('span.next-hint-count');
+const nextLifeCounter = document.querySelector('span.next-life-count');
 let remainingHints = 3;
 let currentScore = 0;
 let currentLives = 5;
 let nextHintIn = 2;
 let nextLifeIn = 3;
-
+let isWaitingForNewGame = false;
 // TODO: add score and limit on hints
 //          score incremented on correct answer, gain a hint every other correct
 //       add togglable limit on how many wrong answers before failure
@@ -20,7 +24,8 @@ let nextLifeIn = 3;
 window.onload = (event) => {
     colorspace.selectedIndex = 0;
     initializeSquares();
-    hintCounter.innerHTML = `(${remainingHints})`;
+    // hintCounter.innerHTML = `${remainingHints}`;
+    changeStats(remainingHints, currentLives, currentScore, nextHintIn, nextLifeIn);
 }
 
 function changeElementColors(toColor) {
@@ -167,6 +172,8 @@ function initializeSquares() {
             console.log(squareColor);
         }
     });
+
+    isWaitingForNewGame = false;
 }
 function changeStats(hints, lives, score, nextHint, nextLife) {
     remainingHints = hints;
@@ -175,7 +182,11 @@ function changeStats(hints, lives, score, nextHint, nextLife) {
     nextHintIn = nextHint;
     nextLifeIn = nextLife;
 
-    hintCounter.innerHTML = `(${remainingHints})`;
+    hintCounter.innerHTML = `${remainingHints}`;
+    livesCounter.innerHTML = `${currentLives}`;
+    scoreCounter.innerHTML = `${currentScore}`;
+    nextHintCounter.innerHTML = `${nextHintIn}`;
+    nextLifeCounter.innerHTML = `${nextLifeIn}`;
 }
 
 function removeRandomSquare() {
@@ -215,7 +226,8 @@ function correctChosen() {
     if(nextHintIn <= 0) {
         nextHintIn = 2;
         remainingHints += 1;
-        hintCounter.innerHTML = `(${remainingHints})`;
+        hintCounter.innerHTML = `${remainingHints}`;
+
     }
     // check if life restored
     nextLifeIn = Math.max(0, nextLifeIn - 1);
@@ -223,6 +235,12 @@ function correctChosen() {
         currentLives += 1;
         nextLifeIn = 3;
     }
+
+    isWaitingForNewGame = true;
+    changeStats(remainingHints, currentLives, currentScore, nextHintIn, nextLifeIn);
+    setTimeout(function() {
+        initializeSquares();
+    }, 2000);
 }
 function incorrectChosen() {
     // lose life
@@ -231,14 +249,23 @@ function incorrectChosen() {
         alert('no more lives remaining');
         // reset squares and score and hints
         setTimeout(function() {
-            initializeSquares();
+            // initializeSquares();
             changeStats(3, 5, 0, 2, 3);
-        })
+        }, 2000);
+        return;
     }
+
+    // isWaitingForNewGame = true;
+    changeStats(remainingHints, currentLives, currentScore, nextHintIn, nextLifeIn);
 }
 
 squares.forEach(function(square) {
     square.addEventListener('click', function() {
+        if(isWaitingForNewGame) {
+            // initializeSquares();
+            console.log('bruh');
+            return;
+        }
         if(isSquareCorrect(square.style.backgroundColor)) {
             changeElementColors(square.style.backgroundColor);
             correctChosen();
@@ -251,9 +278,9 @@ squares.forEach(function(square) {
 
 btns.forEach(function(btn) {
     btn.addEventListener('click', function() {
-        if(btn.classList.contains("new-btn")) {
+        if(btn.classList.contains("new-btn") && !isWaitingForNewGame) {
             initializeSquares();
-        } else if(btn.classList.contains("hint-btn")) {
+        } else if(btn.classList.contains("hint-btn") && !isWaitingForNewGame) {
             removeRandomSquare();
         }
     });

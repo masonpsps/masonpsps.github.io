@@ -51,7 +51,7 @@ body {
     align-items: center; 
 }
 .stat-wrapper {
-   justify-content: space-evenly;
+   justify-content: center;
 }
 .empty {
     flex: 1;
@@ -86,6 +86,15 @@ body {
         0 0 3px var(--main-bg-color)
     ;
 }
+.score-count,
+.lives-count,
+#hint-count {
+    font-size: 1.5em;
+}
+.lives,
+.score {
+    background-color: #1110;
+}
 .tooltip {
     position: relative;
     display: inline-block;
@@ -100,7 +109,7 @@ body {
     background-color: var(--main-bg-color);
     color: var(--text-color);
     text-align: center;
-    /* font-size: 75%; */
+    font-size: 100%;
     /* font-weight: normal; */
     /* padding: 0; */
     border-radius: 1em;
