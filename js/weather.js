@@ -33,8 +33,10 @@ async function displayCards() {
 // WEATHER DATA handlers
 async function getWeatherData(city) {
     const resp = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=3e7def59b7e4f35237a5e546f3378a28`);
+    // const resp = await fetch(`https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=3e7def59b7e4f35237a5e546f3378a28`);
     let info = await resp.json();
-    const icon = await fetch(`http://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`);
+    const icon = await fetch(`https://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`);
+    // const icon = await fetch(`https://cors-anywhere.herokuapp.com/http://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`);
     const imgBlob = await icon.blob();
     const imgURL = URL.createObjectURL(imgBlob);
     info.icon = imgURL;
