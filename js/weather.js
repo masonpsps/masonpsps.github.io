@@ -1,4 +1,5 @@
 let savedCities = [];
+const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const cityList = document.querySelector('.carousel').querySelector('ul');
 const toggleSwitch = document.querySelector('.switch input[type="checkbox"]');
 const scrollContainer = document.querySelector('.carousel');
@@ -9,16 +10,18 @@ const header = document.querySelector('.main-page');
 const mainPage = document.querySelector('.container.main-page');
 const darkenOverlay = document.querySelector('.darken-filter');
 const popupContainer = document.querySelector('.popup-container');
-const textArea = document.querySelector('.text-list textarea')
+const textArea = document.querySelector('.text-list textarea');
+const dateContainer = document.querySelector('.date');
 let btns = document.querySelectorAll('.btn');
 let addBtn = null;
+let today = new Date();
 
 window.onload = (e) => {
     if(true) {      // maybe leave as light mode default
         toggleSwitch.checked = true;
         document.documentElement.setAttribute('data-theme', 'dark');
     }
-
+    dateContainer.innerHTML = `${weekday[today.getDay()]}, ${today.getMonth() + 1} / ${today.getDate()}`;
     displayCards();
 }
 async function displayCards() {

@@ -10,7 +10,7 @@
         <!-- Header -->
         <nav id="navbar">
             <div class="logo">
-                <img src="" alt="img"/>
+                <!-- <img src="" alt="img"/> -->
                 <p>Mason Sipes</p>
             </div>
             <ul id="nav-links">
@@ -30,84 +30,104 @@
         </nav>
         <!-- End of Header -->
         <!-- About -->
-        <div class="home-intro">
-            <h1 id="Home">Home</h1>
-            <p>My name is Mason Sipes</p>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Pariatur perspiciatis in dolorem recusandae veritatis vel voluptatum a itaque! Commodi, dolor!</p>
-        </div>
-        <div class="about-section">
-            <div class="section-header">
-                <h1 id="About">About Me</h1>
-                <p>I am a front end web developer with Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum praesentium harum ea odit earum est.</p>
+        <div class="main" id="Home">
+            <div class="home-intro">
+                <h1 class="section-header">Home</h1>
+                <p>Hi, my name is Mason Sipes</p>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Pariatur perspiciatis in dolorem recusandae veritatis vel voluptatum a itaque! Commodi, dolor!</p>
             </div>
-            <div class="wrapper">
-                <section class="about-blurb left">
-                    <p>Personal professional things... Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate accusantium praesentium minima asperiores perspiciatis ex, nemo quos ipsam enim vitae voluptates quod eum exercitationem eaque?</p>
-                    <p>do you want to contact me?</p>
-                    <button class="btn contact-btn">Contact Me</button>
-                </section>
-                <section class="skills right">
-                    <h3>Skills</h3>
-                    <div class="skills-container">
-                        <ul class="skills-list">
-                            <li class="skill">HTML</li>
-                            <li class="skill">CSS</li>
-                            <li class="skill">JavaScript</li>
-                            <li class="skill">React</li>
-                            <li class="skill">Unity</li>
-                            <li class="skill">C#</li>
-                            <li class="skill">Python</li>
-                            <li class="skill">OpenCV</li>
-                            <li class="skill">C</li>
-                        </ul>
+            <div class="about-section" id="About">
+                <div class="section-header">
+                    <h1>About Me</h1>
+                    <p>I am a front end web developer with Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum praesentium harum ea odit earum est.</p>
+                </div>
+                <div class="wrapper">
+                    <section class="about-blurb left">
+                        <p>Personal professional things... Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate accusantium praesentium minima asperiores perspiciatis ex, nemo quos ipsam enim vitae voluptates quod eum exercitationem eaque?</p>
+                        <p>do you want to contact me?</p>
+                        <button class="btn contact-btn">Contact Me</button>
+                    </section>
+                    <section class="skills right">
+                        <h3>Skills</h3>
+                        <div class="skills-container">
+                            <ul class="skills-list">
+                                <li class="skill">HTML</li>
+                                <li class="skill">CSS</li>
+                                <li class="skill">JavaScript</li>
+                                <!-- <li class="skill">React</li> -->
+                                <li class="skill">Unity</li>
+                                <li class="skill">C#</li>
+                                <li class="skill">Python</li>
+                                <li class="skill">OpenCV</li>
+                                <li class="skill">C</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- End of About -->
+            <!-- Projects -->
+            <div class="project-section" id="Projects">
+                <div class="section-header">
+                    <h1>Projects</h1>
+                    <p>Below are some of the projects I have been working on</p>
+                </div>
+                <!-- Individual Project -->
+                <div class="project">
+                    <img src="" alt="preview img of project page" class="project-img">
+                    <div class="project-info">
+                        <p class="project-header">Color Guessing Game</p>
+                        <p class="project-description">This project is a color guessing game where the player guesses the specified color from a set of six randomly generated colors.</p>
+                        <p class="project-description">The game can be played in RGB, Hexadecimal, and HSL color spaces.  The players score is shown as well as hearts and hints.</p>
+                        <a href="./html/color-game.html" class="project-link">GO TO PROJECT</a>                        
                     </div>
-                </section>
+                </div>
+                <!-- Individual Project -->
+                <div class="project">
+                    <img src="" alt="preview img of project page" class="project-img">
+                    <div class="project-info">
+                        <p class="project-header">Weather App</p>
+                        <p class="project-description">This is a weather app created to display realtime weather data for a list of cities specified by the user.</p>
+                        <p class="project-description">
+                            The list of cities is stored and retrieved from the browser's local storage on load and when the user updates the list.
+                            It also features the ability to toggle dark mode.
+                        </p>
+                        <p class="project-description">Weather data is found using OpenWeatherMap API.</p>
+                        <a href="./html/weather.html" class="project-link">GO TO PROJECT</a>                        
+                    </div>
+                </div>
+                <!-- Individual Project -->
+                <div class="project">
+                    <img src="" alt="preview img of project page" class="project-img">
+                    <div class="project-info">
+                        <p class="project-header">Calculator</p>
+                        <p class="project-description">
+                            This project is a non scientific calculator created in vanilla JavaScript.
+                            Basic arithmetic functions of addition, subtraction, multiplication, and division are included and functional along with  clear, negate, and percent operators.
+                        </p>
+                        <a href="./html/calculator.html" class="project-link">GO TO PROJECT</a>                        
+                    </div>                    
+                </div>
+                <!-- Individual Project -->
+                <div class="project">
+                    <img src="" alt="preview img of project page" class="project-img">
+                    <div class="project-info">
+                        <p class="project-header">Vanilla JavaScript Stopwatch</p>
+                        <p class="project-description">This project is a simple stopwatch with the ability to start/resume, pause, and reset the timer.</p>
+                        <a href="./html/stopwatch.html" class="project-link">GO TO PROJECT</a>
+                    </div>
+                </div>
             </div>
+            <!-- End of Projects -->
+            <!-- Contact -->
+            <div class="contact-section" id="Contact">
+                <div class="section-header">
+                    <h1>Contact</h1>
+                    <p>Contact me if you want</p>
+                </div>
+            </div>
+            <!-- End of Contact -->
         </div>
-        <!-- End of About -->
-        <!-- Projects -->
-        <div class="project-section">
-            <div class="section-header">
-                <h1 id="Projects">Projects</h1>
-                <p>Below are some of the projects I have been doing or whatever</p>
-            </div>
-            <!-- Individual Project -->
-            <div class="project">
-                <img src="" alt="preview img of project page" class="project-img">
-                <p class="project-header">Project 1</p>
-                <p class="project-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus iusto quos non tempore laboriosam expedita.</p>
-                <a href="./html/color-game.html" class="project-link">Project 1</a>
-            </div>
-            <!-- Individual Project -->
-            <div class="project">
-                <img src="" alt="preview img of project page" class="project-img">
-                <p class="project-header">Project 1</p>
-                <p class="project-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus iusto quos non tempore laboriosam expedita.</p>
-                <a href="./html/stopwatch.html" class="project-link">Project 1</a>
-            </div>
-            <!-- Individual Project -->
-            <div class="project">
-                <img src="" alt="preview img of project page" class="project-img">
-                <p class="project-header">Project 1</p>
-                <p class="project-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus iusto quos non tempore laboriosam expedita.</p>
-                <a href="./html/weather.html" class="project-link">Project 1</a>
-            </div>
-            <!-- Individual Project -->
-            <div class="project">
-                <img src="" alt="preview img of project page" class="project-img">
-                <p class="project-header">Project 1</p>
-                <p class="project-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus iusto quos non tempore laboriosam expedita.</p>
-                <a href="./html/calculator.html" class="project-link">Project 1</a>
-            </div>
-        </div>
-        <!-- End of Projects -->
-        <!-- Contact -->
-        <div class="contact-section">
-            <div class="section-header">
-                <h1 id="Contact">Contact</h1>
-                <p>Contact me if you want</p>
-            </div>
-        </div>
-        <!-- End of Contact -->
+        
     </body>
 </html>
