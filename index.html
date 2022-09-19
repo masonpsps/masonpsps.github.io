@@ -34,7 +34,7 @@
             <div class="home-intro">
                 <h1 class="section-header">Home</h1>
                 <p class="intro">Hi, my name is Mason Sipes</p>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Pariatur perspiciatis in dolorem recusandae veritatis vel voluptatum a itaque! Commodi, dolor!</p>
+                <p>I am a frontend web developer. Scroll or use the navigation buttons at the top of the page to learn more about me and to see a few of my projects.</p>
             </div>
             <div class="about-section" id="About">
                 <div class="section-header">
@@ -43,8 +43,10 @@
                 </div>
                 <div class="wrapper">
                     <section class="about-blurb left">
-                        <p>Personal professional things... Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate accusantium praesentium minima asperiores perspiciatis ex, nemo quos ipsam enim vitae voluptates quod eum exercitationem eaque?</p>
-                        <p>do you want to contact me?</p>
+                        <p>I'm Mason Sipes and I am a Frontend Web Developer located in Houston, TX. I also have a Bachelor's degree in Mechatronics and have experience developing in Unity.</p>
+                        <p>If you would like to contact me, please see the contact section below</p>
+                        <button class="btn contact-btn">Contact Me</button>
+                        <!-- <p>do you want to contact me?</p> -->
                         <!-- <button class="btn contact-btn">Contact Me</button> -->
                     </section>
                     <section class="skills right">
@@ -54,7 +56,6 @@
                                 <li class="skill">HTML</li>
                                 <li class="skill">CSS</li>
                                 <li class="skill">JavaScript</li>
-                                <!-- <li class="skill">React</li> -->
                                 <li class="skill">Unity</li>
                                 <li class="skill">C#</li>
                                 <li class="skill">Python</li>
@@ -74,7 +75,7 @@
                 </div>
                 <!-- Individual Project -->
                 <div class="project">
-                    <img src="" alt="preview img of project page" class="project-img">
+                    <img src="./assets/color-game-preview.PNG" alt="preview img of project page" class="project-img">
                     <div class="project-info">
                         <p class="project-header">Color Guessing Game</p>
                         <p class="project-description">This project is a color guessing game where the player guesses the specified color from a set of six randomly generated colors.</p>
@@ -84,7 +85,7 @@
                 </div>
                 <!-- Individual Project -->
                 <div class="project">
-                    <img src="" alt="preview img of project page" class="project-img">
+                    <img src="./assets/weather-preview.png" alt="preview img of project page" class="project-img">
                     <div class="project-info">
                         <p class="project-header">Weather App</p>
                         <p class="project-description">This is a weather app created to display realtime weather data for a list of cities specified by the user.</p>
@@ -98,7 +99,7 @@
                 </div>
                 <!-- Individual Project -->
                 <div class="project">
-                    <img src="" alt="preview img of project page" class="project-img">
+                    <img src="./assets/calculator-preview.PNG" alt="preview img of project page" class="project-img">
                     <div class="project-info">
                         <p class="project-header">Calculator</p>
                         <p class="project-description">
@@ -110,7 +111,7 @@
                 </div>
                 <!-- Individual Project -->
                 <div class="project">
-                    <img src="" alt="preview img of project page" class="project-img">
+                    <img src="./assets/stopwatch-preview.png" alt="preview img of project page" class="project-img">
                     <div class="project-info">
                         <p class="project-header">Vanilla JavaScript Stopwatch</p>
                         <p class="project-description">This project is a simple stopwatch with the ability to start/resume, pause, and reset the timer.</p>
@@ -123,7 +124,52 @@
             <div class="contact-section" id="Contact">
                 <div class="section-header">
                     <h1>Contact</h1>
-                    <p>Contact me if you want</p>
+                    <p>Contact me through the following form</p>
+                    <section id="contact" class="contact sec-pad">
+                        <div class="main-container">
+                          <div class="contact__form-container">
+                            <form action="#" class="contact__form">
+                              <div class="contact__form-field">
+                                <label class="contact__form-label" for="name">Name</label>
+                                <input
+                                  required
+                                  placeholder="Enter Your Name"
+                                  type="text"
+                                  class="contact__form-input"
+                                  name="name"
+                                  id="name"
+                                />
+                              </div>
+                              <div class="contact__form-field">
+                                <label class="contact__form-label" for="email">Email</label>
+                                <input
+                                  required
+                                  placeholder="Enter Your Email"
+                                  type="text"
+                                  class="contact__form-input"
+                                  name="email"
+                                  id="email"
+                                />
+                              </div>
+                              <div class="contact__form-field">
+                                <label class="contact__form-label" for="message">Message</label>
+                                <textarea
+                                  required
+                                  cols="30"
+                                  rows="10"
+                                  class="contact__form-input"
+                                  placeholder="Enter Your Message"
+                                  name="message"
+                                  id="message"
+                                ></textarea>
+                              </div>
+                              <button type="submit" class="btn btn--theme contact__btn">
+                                Submit
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </section>
                 </div>
             </div>
             <!-- End of Contact -->
