@@ -1,55 +1,21 @@
 const minutes = document.querySelector('.min');
 const seconds = document.querySelector('.sec');
 const mseconds = document.querySelector('.msec');
-// const btns = document.querySelectorAll('.btn');
 const startBtn = document.querySelector('.start-btn');
 const resetBtn = document.querySelector('.reset-btn');
+const lapBtn = document.querySelector('.lap-btn');
 const sideNav = document.querySelector('.sidenav');
 const dropdown = document.querySelector('.dropdown');
 const dropdownList = document.querySelector('.dropdown-list');
+const lapRecord = document.querySelector('#lap-record');
 let startTime = 0;
 let t;
 let state = 0;
 let elapsedTime = 0;
 let date = 0;
+let lapNow = null;
 
 // TODO: add lap button functionality
-
-// btns.forEach(function(btn) {
-//     btn.addEventListener('click', function() {
-//         if(btn.classList.contains('start-btn')) {
-//             switch(state) {
-//                 // default, timer at zero and not started
-//                 case 0:     startTimer();    btn.innerHTML = "pause";    break;
-//                 // timer has been started, currently running
-//                 case 1:     pauseTimer();    btn.innerHTML = "resume";   break;
-//                 // timer has been started, currently paused
-//                 case 2:     startTimer();    btn.innerHTML = "pause";    break;
-//             }
-//         } else if(btn.classList.contains('reset-btn')) {
-//             resetTimer();
-//             btns.forEach((btn) => {
-//                 if(btn.classList.contains('start-btn')) {
-//                     btn.innerHTML = "start";
-//                 }
-//             });
-//         } 
-//         // else if(btn.classList.contains('lap-btn')) {
-//         //     lapTimer();
-//         // }
-//     });
-// });
-
-startBtn.addEventListener('click', function() {     // probably should be by classes
-    (state === 0 || state === 2)
-        ? startTimer()
-        : pauseTimer();
-});
-
-resetBtn.addEventListener('click', () => {
-    resetTimer();
-});
-
 
 function startTimer() {
     startTime = Date.now() - elapsedTime;
@@ -89,6 +55,17 @@ function updateTime() {
     minutes.innerHTML = m.toString().padStart(2, '0');
 }
 
+function lapTimer() {
+    lapNow = `
+        <li class="lap">
+            ${minutes} : 
+            ${seconds} . 
+            ${mseconds}
+        </li>
+    `;
+    lapRecord.innerHTML += lapNow;
+}
+
 function openNav() {
     sideNav.style.cssText = 'width: 250px;';
 }
@@ -102,3 +79,11 @@ function dropdownMenu() {
     dropdownList.classList.toggle('hide-dropdown');
     dropdownList.classList.toggle('border');
 }
+
+startBtn.addEventListener('click', function() {     // probably should be by classes
+    (state === 0 || state === 2)
+        ? startTimer()
+        : pauseTimer();
+});
+resetBtn.addEventListener('click', resetTimer);
+lapBtn.addEventListener('click', lapTimer);
