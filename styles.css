@@ -12,6 +12,7 @@
 
 html {
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 *, *::before, *::after {
@@ -71,6 +72,7 @@ nav {
 .logo p {
     font-weight: 600;
     text-transform: uppercase;
+    pointer-events: none;
 }
 
 #nav-links {
@@ -129,6 +131,10 @@ h1.section-header {
 .section-header p {
     margin-bottom: 20px;
     max-width: 80%;
+}
+
+.main#Home {
+
 }
 
 .home-intro {
