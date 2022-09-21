@@ -4,6 +4,9 @@ const mseconds = document.querySelector('.msec');
 // const btns = document.querySelectorAll('.btn');
 const startBtn = document.querySelector('.start-btn');
 const resetBtn = document.querySelector('.reset-btn');
+const sideNav = document.querySelector('.sidenav');
+const dropdown = document.querySelector('.dropdown');
+const dropdownList = document.querySelector('.dropdown-list');
 let startTime = 0;
 let t;
 let state = 0;
@@ -84,4 +87,18 @@ function updateTime() {
     mseconds.innerHTML = ms.toString().padStart(3, '0').substring(0, 2);
     seconds.innerHTML = s.toString().padStart(2, '0');
     minutes.innerHTML = m.toString().padStart(2, '0');
+}
+
+function openNav() {
+    sideNav.style.cssText = 'width: 250px;';
+}
+function closeNav() {
+    sideNav.style.cssText = 'width: 0px;';
+}
+
+function dropdownMenu() {
+    // let elem = document.querySelector('.dropdown');
+    dropdown.classList.toggle('show-dropdown');
+    dropdownList.classList.toggle('hide-dropdown');
+    dropdownList.classList.toggle('border');
 }

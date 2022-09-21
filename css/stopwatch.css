@@ -4,6 +4,11 @@
     --outline: rgb(0, 140, 255);
     --grad-1: #38ada9;
     --grad-2: #079992;
+    --sidenav-bg: #111;
+    --sidenav-text: #ffffff;
+    --sidenav-border: #69696969;
+    --sidenav-hover: #6c517e;
+    --sidenav-active: #8448ac;
 }
 
 html {
@@ -47,4 +52,65 @@ body {
     background-color: rgba(0, 0, 0, 0);
     color: var(--text-color);
     border-radius: 5px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: var(--sidenav-bg);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.sidenav a,
+.bar-btn {
+    text-decoration: none;
+    font-size: 1.5em;
+    background-color: #1110;
+    color: var(--sidenav-text);
+    display: block;
+    transition: 0.3s;
+}
+.sidenav .close-btn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+.bar-item,
+.bar-btn {
+    display: block;
+    padding: 0.5em;
+    background-color: var(--sidenav-bg);
+    white-space: nowrap;
+    user-select: none;
+    color: var(--sidenav-text);
+}
+.bar-item:hover,
+.bar-btn:hover {
+    background-color: var(--sidenav-hover);
+}
+.bar-item:active,
+.bar-btn:active {
+    background-color: var(--sidenav-active);
+}
+.bar-btn {
+    cursor: pointer;
+}
+.first {
+    margin-top: 2em;
+}
+.hide-dropdown {
+    display: none;
+}
+.indent {
+    padding-left: 2em;
+}
+.border {
+    border-bottom: 2px solid var(--sidenav-border);
 }
