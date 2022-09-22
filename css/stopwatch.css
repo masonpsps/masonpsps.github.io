@@ -9,6 +9,9 @@
     --sidenav-border: #69696969;
     --sidenav-hover: #6c517e;
     --sidenav-active: #8448ac;
+
+    --lap-slow: #ffacce;
+    --lap-fast: #84ff84;
 }
 
 html {
@@ -107,7 +110,6 @@ body {
 }
 .timer p {
     font-size: 5em;
-
 }
 
 /* BUTTONS */
@@ -130,18 +132,22 @@ body {
     color: var(--text-color);
     border-radius: 5px;
 }
+.btn:hover {
+    background-color: var(--text-color);
+    border-color: rgba(0, 0, 0, 0);
+    color: rgba(0, 0, 0, 0);
+}
 
 /* LAPS */
 .laps {
     width: 100%;
-    font-size: 1.5em;
     position: absolute;
-    bottom: 9em;
-    /* right: -7em; */
+    bottom: 12em;
     display: flex;
     justify-content: center;
     align-items: center;
-    height:fit-content;
+    margin: 0;
+    padding: 0;
 }
 ul.lap-record {
     list-style: none;
@@ -152,6 +158,26 @@ ul.lap-record {
 ul.lap-record li {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
+    margin: -1.75em auto 0;
+    padding: 0;
+    font-size: 1.5em;
+    color: var(--text-color);
+}
+@keyframes slower-time {
+    0%   { color: var(--text-color); }
+    5%   { color: var(--lap-slow); }
+    100% { color: var(--text-color); }
+}
+@keyframes faster-time {
+    0%   { color: var(--text-color); }
+    5%   { color: var(--lap-fast); }
+    100% { color: var(--text-color); }
+}
+.slower-anim {
+    animation: slower-time 2s ease-out forwards;
+    animation-iteration-count: 1;
+}
+.faster-anim {
+    animation: faster-time 2s ease-out forwards;
+    animation-iteration-count: 1;
 }
