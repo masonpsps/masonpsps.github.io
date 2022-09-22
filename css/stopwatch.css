@@ -131,11 +131,22 @@ body {
     background-color: rgba(0, 0, 0, 0);
     color: var(--text-color);
     border-radius: 5px;
+    transition: 0.25s;
 }
 .btn:hover {
-    background-color: var(--text-color);
-    border-color: rgba(0, 0, 0, 0);
-    color: rgba(0, 0, 0, 0);
+    /* background-color: var(--sidenav-active); */
+    /* color: var(--sidenav-active);
+    border-color: var(--sidenav-active); */
+    filter: brightness(150%);
+    filter: hue-rotate(120deg);
+}
+.btn:active {
+    /* background-color: var(--sidenav-text);
+    color: var(--sidenav-hover);
+    border-color: var(--sidenav-hover); */
+    background-color: var(--sidenav-bg);
+    filter: brightness(200%);
+    filter: hue-rotate(180deg);
 }
 
 /* LAPS */
