@@ -24,6 +24,11 @@ body {
     background-attachment: fixed;
 }
 
+.wrapper {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
 .container {
     width: 600px;
     margin: 50px auto;

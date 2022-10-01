@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe App</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">  
+    <link rel="stylesheet" href="../css/recipe.css">
+</head>
+<body>
+    <!-- SIDENAV collapsible -->
+    <!-- <div class="sidenav-wrapper">
+        <div class="sidenav" id="sidenav">
+            <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">
+                <i class="fa fa-close"></i>
+            </a>
+            <a href="../index.html" class="nav-item first border">Home</a>
+            <a href="../index.html#About" class="nav-item border">About</a>
+            <div class="nav-btn dropdown border" onclick="dropdownMenu()">
+                Projects
+                <i class="fa.fa-caret-down"></i>
+            </div>
+            <div class="nav-block dropdown-list hide-dropdown border">
+                <a href="./color-game.html" class="nav-item nav-btn indent border">Color Game</a>
+                <a href="./weather.html" class="nav-item nav-btn indent border">Weather App</a>
+                <a href="./calculator.html" class="nav-item nav-btn indent border">Calculator</a>
+                <a href="./stopwatch.html" class="nav-item nav-btn indent border">Stopwatch</a>
+            </div>
+            <a href="../index.html#Contact" class="nav-item">Contact</a>
+        </div>
+        <div class="open-icon">
+            <span onclick="openNav()"><i class="fa fa-bars fa-2x"></i></span>
+        </div> 
+    </div> -->
+    <!-- HEADER w search -->
+    <div class="header sticky">
+        <div class="open-icon">
+            <span onclick="openNav()"><i class="fa fa-bars fa-2x"></i></span>
+        </div> 
+        <div class="search-wrapper">
+            <form action="#">
+                <input class="search" type="text" placeholder="Search...">
+                <button class="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+        <!-- SAVED LIST -->
+        <div class="saved-wrapper">
+            <ul class="saved"></ul>
+        </div>
+        <!-- more content -->
+
+        <!-- POPUP CONTAINER -->
+        <div class="popup-container">
+            <div class="popup-wrapper">
+                <div class="popup-content">
+                    <div class="close-popup"><i class="fa fa-close"></i></div>
+                    <div class="popup-img"><img src="" alt="img"></div>
+                    <div class="popup-title">DISH NAME</div>
+                    <div class="ingredients">
+                        Ingredients
+                        <ul class="ingredient-list">
+                            <li>
+                                <span class="measurement">1C</span> 
+                                <span class="ingredient">Ingredient</span>
+                            </li>
+                            <li>
+                                <span class="measurement">1C</span> 
+                                <span class="ingredient">Ingredient</span>
+                            </li>
+                            <li>
+                                <span class="measurement">1C</span> 
+                                <span class="ingredient">Ingredient</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="directions">
+                        Directions
+                        <p class="full-directions">**directions**</p>
+                    </div>
+                </div>                        
+            </div>
+                    
+        </div>
+    </div>
+    
+
+    <script src="../js/recipe.js"></script>
+</body>
+</html>
