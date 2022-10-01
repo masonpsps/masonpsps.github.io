@@ -1,6 +1,12 @@
 :root {
     --text-color: #e7e7e7;
     --header-primary: #333;
+
+    --sidenav-bg: #111;
+    --sidenav-text: #ffffff;
+    --sidenav-border: #69696969;
+    --sidenav-hover: #6c517e;
+    --sidenav-active: #8448ac;
 }
 
 html {
@@ -10,9 +16,6 @@ html {
 body {
     background-color: var(--header-primary);
 }
-
-/* SIDENAV */
-
 
 /* HEADER */
 .header {
@@ -171,4 +174,69 @@ p.direction-step {
     font-size: 2em;
     cursor: pointer;
     /* change color to fit theme, also hover and active */
+}
+
+
+/* SIDENAV */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: var(--sidenav-bg);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+.sidenav a,
+.nav-btn {
+    text-decoration: none;
+    font-size: 1.5em;
+    background-color: #1110;
+    color: var(--sidenav-text);
+    display: block;
+    transition: 0.3s;
+}
+.sidenav .close-btn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+.nav-item,
+.nav-btn {
+    display: block;
+    padding: 0.5em;
+    background-color: var(--sidenav-bg);
+    white-space: nowrap;
+    user-select: none;
+    color: var(--sidenav-text);
+}
+.nav-item:hover,
+.nav-btn:hover {
+    background-color: var(--sidenav-hover);
+}
+.nav-item:active,
+.nav-btn:active {
+    background-color: var(--sidenav-active);
+}
+.nav-btn {
+    cursor: pointer;
+}
+.first {
+    margin-top: 2em;
+}
+.hide-dropdown {
+    display: none;
+}
+.indent {
+    padding-left: 2em;
+}
+.border {
+    border-bottom: 2px solid var(--sidenav-border);
+}
+.show-dropdown {
+    background-color: var(--sidenav-hover);
 }
