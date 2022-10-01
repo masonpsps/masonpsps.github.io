@@ -16,17 +16,16 @@ function showPopup(mealInfo) {
         <div class="popup-img"><img src="${mealInfo.meals[0].strMealThumb}" alt="img"></div>
         <div class="popup-title">${mealInfo.meals[0].strMeal}</div>
         <div class="ingredients">
-            Ingredients
+            <span class="section-title">Ingredients</span>
             <ul class="ingredient-list">
                 ${measuredIngredients}
             </ul>
         </div>
         <div class="directions">
-            Directions
+            <span class="section-title">Directions</span>
             <p class="full-directions">${formattedDirections}</p>
         </div>
     `;
-    // console.log(mealInfo.meals[0].strInstructions);
 }
 function getIngredientsWithMeasurements(mealInfo) {
     let measurements = [];
@@ -55,19 +54,27 @@ function getIngredientsWithMeasurements(mealInfo) {
 }
 function formatDirections(mealInfo) {
     let unformatted = mealInfo.meals[0].strInstructions;
-    let regex = /\r\n/g;
-    let n = unformatted.split(regex);
+    let n = unformatted.split(/\r\n/g);
     let formattedDir = '';
+    let stepNum = 1;
     for(let i = 0; i < n.length; i++) {
-        if(n[i] !== "" && n[i] !== " ") { 
-            formattedDir += `
-                <p>Step ${i + 1}</p>
-                <p>${n[i]}</p>
-            `; 
-         }
-    }
-    
-
+        if(n[i] !== "" && n[i] !== " ") {
+            if(/^(\s*\d+.\s*)/i.test(n[i])) {
+                // n[i] = n[i].split(/^(\s*STEP\s*\d*|\s*\d+.*\s*)/gi);
+                // let blah = n[i].match(/^(\s*STEP\s*\d*|\s*\d+.*\s*)/i);
+                n[i] = n[i].replace(/^(\s*STEP\s*\d*|\s*\d+.\s*)/i, '');
+            } else if(/^(\s*STEP\s*\d*)/i.test(n[i])) {
+                n[i] = '';
+            }
+            if(n[i] !== '' && n[i] !== " ") {
+                formattedDir += `
+                    <p class="direction-step">Step ${stepNum}</p>
+                    <p class="">${n[i]}</p>
+                `;
+                stepNum++; 
+            }
+        }
+    }    
     return formattedDir;
 }
 
@@ -92,7 +99,29 @@ async function fillMealsOnLoad() {
 async function findRandomMealInfo() {
     let info = [];
     let resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+    // let resp = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=Fish+Fofos');
+    
+    {
+        // problem recipes (directions not formatted correctly)
+        // Beef Banh Mi Bowls
+        //
+    }
+    
     info = resp.json();
 
     return info;
+}
+
+
+// HAVE TO ADD FUNCTIONALITY TO THESE
+function openNav() {
+    sideNav.style.cssText = 'width: 250px;';
+}
+function closeNav() {
+    sideNav.style.cssText = 'width: 0px;';
+}
+function dropdownMenu() {
+    dropdown.classList.toggle('show-dropdown');
+    dropdown.classList.toggle('hide-dropdown');
+    dropdown.classList.toggle('border');
 }

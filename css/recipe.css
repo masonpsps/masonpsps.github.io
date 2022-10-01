@@ -119,9 +119,11 @@ ul.saved li {
     transform: translateY(-50%);
     background-color: var(--text-color);
     font-size: 1.25em;
-    padding: 2em 0.25em 2em 2em;
+    /* padding: 2em 0.25em 2em 2em; */
+    padding: 1em 0.25em 1em 1.5em;
     border-radius: 10px;
     overflow: hidden;
+    width: 650px;
 }
 .popup-content {
     overflow-y: scroll;
@@ -147,7 +149,26 @@ ul.saved li {
     text-transform: uppercase;
     max-width: 600px;
 }
-.full-directions {
-    max-width: 600px;
-    white-space: pre-wrap;
+.directions {
+    width: 90%;
+}
+p.direction-step {
+    font-style: italic;
+}
+.direction-step {
+    margin-left: 1em;
+    font-weight: 500;
+}
+.section-title {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.close-popup {
+    position: absolute;
+    top: 0.25em;
+    right: 0.75em;
+    font-size: 2em;
+    cursor: pointer;
+    /* change color to fit theme, also hover and active */
 }
