@@ -1,10 +1,14 @@
-const savedMeals = [];
+let savedMeals = [];
 
 const savedListElement = document.querySelector('ul.saved');
 const popupDisplay = document.querySelector('.popup-content');
+const sideNav = document.querySelector('.sidenav');
+const dropdown = document.querySelector('.dropdown');
+const dropdownList = document.querySelector('.dropdown-list');
 
 window.onload = (e) => {
-    fillMealsOnLoad();
+    let mealsLS = getFromLocalStorage();
+    fillMealsOnLoad(mealsLS);
 }
 
 function showPopup(mealInfo) {
@@ -103,30 +107,56 @@ function addMealToSaved(mealToAdd) {
     `;
     
 }
-async function fillMealsOnLoad() {
-    for(let i = 0; i < 4; i++) {
-        let meal = await findRandomMealInfo();
+async function fillMealsOnLoad(mealsList) {
+    for(let i = 0; i < mealsList.length; i++) {
+        let meal = await findMealInfo('id', mealsList[i][0]);
         addMealToSaved(meal);
     }
-    let rand = await findRandomMealInfo();
-    // showPopup(rand);
 }
-async function findRandomMealInfo() {
+async function findMealInfo(searchType, str) {
     let info = [];
-    let resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
-    // let resp = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=Fish+Fofos');
-    
-    {
-        // problem recipes (directions not formatted correctly)
-        // Beef Banh Mi Bowls
-        //
+    let resp = '';
+
+    if(str === undefined && searchType !== 'random') {
+        console.log('no str defined, defaulting to random search');
+        searchType = 'random';
     }
-    
+    switch(searchType) {
+        case 'id':
+            resp = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${str}`);
+            break;
+        case 'name':
+            resp = await fetch(`www.themealdb.com/api/json/v1/1/search.php?s=${str}`);
+            break;
+        case 'random':
+            resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+            break;
+        default:    // random search
+            resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+            break;
+    }
+
+    // let resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+    // let resp = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=Fish+Fofos');
+
     info = resp.json();
 
     return info;
 }
 
+function addToLocalStorage(toSave) {
+    let allInfo = [];
+    for(let i = 0; i < toSave.length; i++) {
+        let savedInfo = [toSave[i].meals[0].idMeal, toSave[i].meals[0].strMeal];
+        allInfo.push(savedInfo);
+    }
+    localStorage.setItem('savedRecipes', JSON.stringify(allInfo));
+}
+function getFromLocalStorage() {
+    let stored = JSON.parse(localStorage.getItem('savedRecipes'));
+
+    return stored === null ? [] : stored;
+}
 
 // HAVE TO ADD FUNCTIONALITY TO THESE
 function openNav() {
@@ -137,8 +167,8 @@ function closeNav() {
 }
 function dropdownMenu() {
     dropdown.classList.toggle('show-dropdown');
-    dropdown.classList.toggle('hide-dropdown');
-    dropdown.classList.toggle('border');
+    dropdownList.classList.toggle('hide-dropdown');
+    dropdownList.classList.toggle('border');
 }
 
 savedListElement.addEventListener('wheel', (e) => {

@@ -8,7 +8,6 @@ const sideNav = document.querySelector('.sidenav');
 const dropdown = document.querySelector('.dropdown');
 const dropdownList = document.querySelector('.dropdown-list');
 const lapRecord = document.querySelector('.lap-record');
-// const $ = window.jQuery;
 let startTime = 0;
 let t;
 let state = 0;
@@ -20,8 +19,6 @@ let lapTime = { min: 0, sec: 0, msec: 0};
 let lapNumber = 1;
 let currentLapTime = document.querySelector('.current-lap p.lap-time');
 let diff = 0, prevDiff = 0;
-
-// TODO: add lap button functionality
 
 function startTimer() {
     startTime = Date.now() - elapsedTime;
