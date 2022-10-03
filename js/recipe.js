@@ -8,11 +8,19 @@ window.onload = (e) => {
 }
 
 function showPopup(mealInfo) {
+    if(mealInfo === false) {
+        popupDisplay.parentElement.parentElement.classList.add('hidden');
+        return;
+    }
+    
+    popupDisplay.parentElement.parentElement.classList.remove('hidden');
+    popupDisplay.scrollTo(0, 0);
+
     let measuredIngredients = getIngredientsWithMeasurements(mealInfo);
     let formattedDirections = formatDirections(mealInfo);
-    
+
     popupDisplay.innerHTML = `
-        <div class="close-popup"><i class="fa fa-close"></i></div>
+        <div class="close-popup" onclick="showPopup(false)"><i class="fa fa-close"></i></div>
         <div class="popup-img"><img src="${mealInfo.meals[0].strMealThumb}" alt="img"></div>
         <div class="popup-title">${mealInfo.meals[0].strMeal}</div>
         <div class="ingredients">
@@ -26,6 +34,7 @@ function showPopup(mealInfo) {
             <p class="full-directions">${formattedDirections}</p>
         </div>
     `;
+
 }
 function getIngredientsWithMeasurements(mealInfo) {
     let measurements = [];
@@ -79,14 +88,18 @@ function formatDirections(mealInfo) {
 }
 
 function addMealToSaved(mealToAdd) {
+    savedMeals.push(mealToAdd);
+    let index = savedMeals.indexOf(mealToAdd);
+
     savedListElement.innerHTML += `
-        <li>
+        <li onclick="showPopup(savedMeals[${index}])">
             <div class="saved-preview">
                 <img src="${mealToAdd.meals[0].strMealThumb}" alt="img">
             </div>
             <p class="saved-name">${mealToAdd.meals[0].strMeal}</p>
         </li>
     `;
+    
 }
 async function fillMealsOnLoad() {
     for(let i = 0; i < 4; i++) {

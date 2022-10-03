@@ -9,6 +9,7 @@
     --sidenav-active: #8448ac;
 }
 
+
 html {
     box-sizing: border-box;
 }
@@ -120,13 +121,17 @@ ul.saved li {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: var(--text-color);
+    background-color: var(--header-primary);
+    color: var(--text-color);
     font-size: 1.25em;
     /* padding: 2em 0.25em 2em 2em; */
     padding: 1em 0.25em 1em 1.5em;
     border-radius: 10px;
     overflow: hidden;
     width: 650px;
+    box-shadow: 
+        5px 5px 10px var(--text-color);
+        /* 10px 10px 8px var(--sidenav-bg); */
 }
 .popup-content {
     overflow-y: scroll;
@@ -174,6 +179,9 @@ p.direction-step {
     font-size: 2em;
     cursor: pointer;
     /* change color to fit theme, also hover and active */
+}
+.hidden {
+    display: none;
 }
 
 
