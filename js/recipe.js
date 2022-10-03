@@ -21,8 +21,10 @@ function showPopup(mealInfo) {
 
     popupDisplay.innerHTML = `
         <div class="close-popup" onclick="showPopup(false)"><i class="fa fa-close"></i></div>
-        <div class="popup-img"><img src="${mealInfo.meals[0].strMealThumb}" alt="img"></div>
-        <div class="popup-title">${mealInfo.meals[0].strMeal}</div>
+        <div class="img-title-wrapper">
+            <div class="popup-img"><img src="${mealInfo.meals[0].strMealThumb}" alt="img"></div>
+            <div class="popup-title">${mealInfo.meals[0].strMeal}</div>
+        </div>
         <div class="ingredients">
             <span class="section-title">Ingredients</span>
             <ul class="ingredient-list">
@@ -107,7 +109,7 @@ async function fillMealsOnLoad() {
         addMealToSaved(meal);
     }
     let rand = await findRandomMealInfo();
-    showPopup(rand);
+    // showPopup(rand);
 }
 async function findRandomMealInfo() {
     let info = [];
@@ -138,3 +140,8 @@ function dropdownMenu() {
     dropdown.classList.toggle('hide-dropdown');
     dropdown.classList.toggle('border');
 }
+
+savedListElement.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    savedListElement.scrollLeft += e.deltaY / 2;
+});

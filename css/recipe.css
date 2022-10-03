@@ -129,6 +129,7 @@ ul.saved li {
     border-radius: 10px;
     overflow: hidden;
     width: 650px;
+    height: min(750px, 90vh);
     box-shadow: 
         5px 5px 10px var(--text-color);
         /* 10px 10px 8px var(--sidenav-bg); */
@@ -136,8 +137,10 @@ ul.saved li {
 .popup-content {
     overflow-y: scroll;
     scrollbar-width: thin;
-    max-height: 85vh;
+    /* max-height: 85vh; */
+    height: 100%;
     padding-right: 1.75em;
+    /* border: 1px solid var(--sidenav-active); */
 }
 .popup-img {
     margin: 0 auto;
@@ -146,6 +149,7 @@ ul.saved li {
 .popup-img img {
     max-width: 400px;
     height: auto;
+    box-shadow: 0 0 5px 2px var(--sidenav-active);
     border-radius: 10px;
     text-align: center;
 }
@@ -156,9 +160,11 @@ ul.saved li {
     text-align: center;
     text-transform: uppercase;
     max-width: 600px;
+    /* border: 1px solid var(--sidenav-active); */
 }
 .directions {
     width: 90%;
+    /* border: 1px solid var(--sidenav-active); */
 }
 p.direction-step {
     font-style: italic;
@@ -170,6 +176,46 @@ p.direction-step {
 .section-title {
     text-transform: uppercase;
     font-weight: 600;
+}
+
+@media screen and (max-width:750px) {
+    .popup-wrapper {
+        width: 85vw;
+    }
+    .popup-img img {
+        max-width: 67%;
+    }
+}
+@media screen and (min-width:1250px) {
+    .popup-wrapper {
+        width: 90vw;
+    }
+    .popup-content {
+        display: flex;
+        flex-direction: row;
+        overflow-y: hidden;
+        padding-left: 0.25em;
+    }
+    .img-title-wrapper {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+    }
+    .popup-title {
+        margin: 0 auto 1em;
+    }
+    .ingredients {
+        min-width: fit-content;
+    }
+    .ingredients,
+    .directions {
+        margin-top: 1.5em;
+        margin-left: 1.5em;        
+        overflow-y: auto;
+        scrollbar-width: thin;
+        padding-right: 0.5em;
+    }
 }
 
 .close-popup {
