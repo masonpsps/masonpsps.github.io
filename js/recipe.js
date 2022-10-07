@@ -5,10 +5,26 @@ const popupDisplay = document.querySelector('.popup-content');
 const sideNav = document.querySelector('.sidenav');
 const dropdown = document.querySelector('.dropdown');
 const dropdownList = document.querySelector('.dropdown-list');
+const filterCategory = document.querySelector('span.category-list');
+const filterIngredient = document.querySelector('span.ingredient-list');
+const filterRegion = document.querySelector('span.region-list');
+const randomFilteredC = document.querySelector('.category-search-container .filtered-results');
+// const randomFilteredI = document.querySelector('.ingredient-list .filtered-results');
+// const randomFilteredR = document.querySelector('.region-list .filtered-results');
+let filters = [[], [], []];
+let activeFilter = [[], [], []];
+
+// TODO:    functioning search bar
+//          fav/remove from favs recipes
+//          auto display random/suggested recipes under favs
+//          add custom recipes to save to local storage?
 
 window.onload = (e) => {
     let mealsLS = getFromLocalStorage();
     fillMealsOnLoad(mealsLS);
+
+    initializeFilters();
+    // TODO:    add functionality to filters
 }
 
 function showPopup(mealInfo) {
@@ -158,7 +174,118 @@ function getFromLocalStorage() {
     return stored === null ? [] : stored;
 }
 
-// HAVE TO ADD FUNCTIONALITY TO THESE
+async function initializeFilters() {
+    let categList = fetch(`https://www.themealdb.com/api/json/v1/1/list.php?c=list`)
+        .then(response => response.json())
+        .then((json) => {
+            filters[0] = json;
+            displayFilters(filters[0].meals, filterCategory, 'strCategory');
+        }
+    );
+    let ingrList = fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`)
+        .then(response => response.json())
+        .then((json) => {
+            filters[1] = json;
+        });
+    let regionList = fetch(`https://www.themealdb.com/api/json/v1/1/list.php?a=list`)
+        .then(response => response.json())
+        .then((json) => {
+            filters[2] = json;
+            displayFilters(filters[2].meals, filterRegion, 'strArea');
+            findMealsByFilters(0);
+        });
+}
+
+function displayFilters(from, toElement, strValue) {
+    let strTemp = '';
+    for(let i = 0; i < from.length; i++) {
+        strTemp += `
+            <div class="filter-item" onclick="selectFilter(this)">
+                ${from[i][strValue]}
+            </div>
+        `;
+    }
+    toElement.innerHTML = strTemp;
+}
+function findMealsByFilters(filterType) {
+    let letter = 'c';
+    switch (filterType) {
+        case 0:         letter = 'c';      break;
+        case 1:         letter = 'i';      break;
+        case 2:         letter = 'a';      break;
+        default:        letter = 'c';      break;
+    }
+
+    let resp = fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?${letter}=${activeFilter[filterType]}`)
+        .then(response => response.json())
+        .then((json) => {
+            if(json.meals !== null) {
+                console.log(json);
+                let r = [
+                    Math.floor(Math.random() * json.meals.length), 
+                    Math.floor(Math.random() * json.meals.length), 
+                    Math.floor(Math.random() * json.meals.length)
+                ];
+                displayNonSavedMeal('random', json.meals[r[0]]);
+                displayNonSavedMeal(filterType, json.meals[r[1]]);
+                displayNonSavedMeal(filterType, json.meals[r[2]]);
+            } else {
+
+            }
+
+        });
+}
+
+function selectFilter(selectedFilter) {
+    selectedFilter.classList.toggle('selected-filter');
+    let whichType = 0;
+
+    if(selectedFilter.classList.contains('selected-filter')) {
+        activeFilter[whichType].push(selectedFilter.outerText);
+    } else {
+        activeFilter[whichType]
+            .splice(activeFilter[whichType].indexOf(selectedFilter.outerText), 1);
+    }
+
+    if(selectedFilter.parentElement.classList.contains('category-list')) {
+        whichType = 0;
+    } else if(selectedFilter.parentElement.classList.contains('ingredient-list')) {
+        whichType = 1;
+    } else if(selectedFilter.parentElement.classList.contains('region-list')) {
+        whichType = 2;
+    }
+
+    findMealsByFilters(whichType);
+}
+function displayNonSavedMeal(filterType, meal) {
+    // let elem = randomFilteredC;
+    // switch (filterType) {
+    //     case 0:     elem = randomFilteredC;     break;
+    //     default:    elem = randomFilteredC;     break;
+    // }
+
+    // if(filterType === 'random' || !filterType) {
+    //     meal = findMealInfo();
+    //     meal = meal.meals[0];        
+    // }
+
+    let str = `
+        <div class="search-result">
+            <div class="result-img">
+                <img src="{meal.strMealThumb}" alt="">
+            </div>
+            <div class="result-banner">
+                <span class="result-name">{meal.strMeal}</span>
+                <span class="result-fav"><i class="fa fa-heart"></i></span>
+            </div>
+        </div>
+    `;
+
+    randomFilteredC.innerHTML += str;
+    console.log(meal);
+
+}
+
 function openNav() {
     sideNav.style.cssText = 'width: 250px;';
 }

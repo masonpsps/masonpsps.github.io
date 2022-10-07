@@ -52,10 +52,11 @@ button.submit {
 }
 
 /* SAVED LIST */
-.saved-wrapper {
+.saved-wrapper,
+.section-wrapper {
     font-size: 1.5em;
     width: 100%;
-    height: 200px;
+    height: 220px;
     color: var(--text-color);
 }
 ul.saved {
@@ -102,6 +103,8 @@ ul.saved li {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }
+
+
 
 /* RECIPE POPUP */
 .popup-container {
@@ -229,6 +232,89 @@ p.direction-step {
 .hidden {
     display: none;
 }
+
+.filters {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;        
+    /* maybe to have collapsible filter section set overflow hidden with 
+    fixed height and apply class to unspecify height */
+    max-width: 90vw;
+    position: relative;
+    transform: translateY(-25px);
+}
+.filter-item {
+    background-color: #555;
+    font-size: 0.75em;
+    height: 1em;
+    border-radius: 1em;
+    padding: 0 0.5em;
+    margin-right: 0.25em;
+    margin-bottom: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+.filter-item:hover {
+    filter: brightness(125%);
+}
+.filter-item:active {
+    filter: brightness(175%);
+}
+.selected-filter {    
+    background-color: var(--sidenav-active);
+}
+.selected-filter::after {
+    color: var(--text-color);
+    content: '\f00d';
+    font-family: FontAwesome;
+    margin-left: 0.5em;
+}
+
+.section-wrapper {
+    margin-bottom: 60px;
+}
+
+.filtered-results {
+    border: 1px solid green;
+    transform: translateY(-25px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+}
+.search-result {
+    width: 275px;
+    height: 200px;
+    border: 1px solid red;
+    background-color: #fff;
+    border-radius: 1em;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.search-result .result-img {
+    width: 100%;
+    height:65%;
+    background-color: #bd67f0;
+}
+.search-result .result-banner {
+    height: 35%;
+    padding: 0 0.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    background-color: var(--header-primary);
+    color: var(--text-color);
+}
+.search-result .result-name {
+    /* TODO: add ellipsis on overflow past two lines */
+}
+
 
 
 /* SIDENAV */
