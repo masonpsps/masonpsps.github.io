@@ -276,30 +276,32 @@ p.direction-step {
 }
 
 .section-wrapper {
-    margin-bottom: 60px;
+    margin-bottom: 90px;
 }
 
 .filtered-results {
-    border: 1px solid green;
     transform: translateY(-25px);
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    flex-direction: row;
 }
 .search-result {
     width: 275px;
     height: 200px;
-    border: 1px solid red;
-    background-color: #fff;
+    box-shadow: 1px 1px 3px var(--sidenav-bg);
     border-radius: 1em;
     overflow: hidden;
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 .search-result .result-img {
     width: 100%;
     height:65%;
     background-color: #bd67f0;
+}
+.result-img img {
+    object-fit:cover;
+    height: 100%;
+    width: 100%;
 }
 .search-result .result-banner {
     height: 35%;

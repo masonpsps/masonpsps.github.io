@@ -9,8 +9,8 @@ const filterCategory = document.querySelector('span.category-list');
 const filterIngredient = document.querySelector('span.ingredient-list');
 const filterRegion = document.querySelector('span.region-list');
 const randomFilteredC = document.querySelector('.category-search-container .filtered-results');
-// const randomFilteredI = document.querySelector('.ingredient-list .filtered-results');
-// const randomFilteredR = document.querySelector('.region-list .filtered-results');
+const randomFilteredI = document.querySelector('.ingredient-list .filtered-results');
+const randomFilteredR = document.querySelector('.region-list .filtered-results');
 let filters = [[], [], []];
 let activeFilter = [[], [], []];
 
@@ -24,10 +24,20 @@ window.onload = (e) => {
     fillMealsOnLoad(mealsLS);
 
     initializeFilters();
+
+    loadMealsByFilter(3, 0);
     // TODO:    add functionality to filters
 }
 
+// popup display and formatting ingredients/directions
 function showPopup(mealInfo) {
+    /*
+    This function displays the popup for a meal when clicked on
+    and displays relevant information for that meal
+    and calls the functions to format the meals ingredients and directions
+
+    the popup is instead hidden if no arguments are given
+    */
     if(mealInfo === false) {
         popupDisplay.parentElement.parentElement.classList.add('hidden');
         return;
@@ -59,6 +69,14 @@ function showPopup(mealInfo) {
 
 }
 function getIngredientsWithMeasurements(mealInfo) {
+    /*
+    This function formats the ingredients from the given meal
+    and fills a list containing the measurement and corresponding
+    ingredient
+
+    API lists ingredients as strIngredient# and measurements as strMeasurement#
+    where # is from 1 to 20
+    */
     let measurements = [];
     let ingredients = [];
     let ingrListString = '';
@@ -84,6 +102,17 @@ function getIngredientsWithMeasurements(mealInfo) {
     return ingrListString;
 }
 function formatDirections(mealInfo) {
+    /*
+    This function formats the directions from the given meal and
+    returns a string with a label for each step followed by the 
+    instruction for that step
+
+    API stores directions as a single string with new steps generally
+    designated by \r\n so regex is used to split the string into an array
+    relatively inconsistent however(many directions already contain step 
+    labels as STEP X or X.) so regex implemented to remove array elements
+    or substrings matching those formats
+    */
     let unformatted = mealInfo.meals[0].strInstructions;
     let n = unformatted.split(/\r\n/g);
     let formattedDir = '';
@@ -91,8 +120,6 @@ function formatDirections(mealInfo) {
     for(let i = 0; i < n.length; i++) {
         if(n[i] !== "" && n[i] !== " ") {
             if(/^(\s*\d+.\s*)/i.test(n[i])) {
-                // n[i] = n[i].split(/^(\s*STEP\s*\d*|\s*\d+.*\s*)/gi);
-                // let blah = n[i].match(/^(\s*STEP\s*\d*|\s*\d+.*\s*)/i);
                 n[i] = n[i].replace(/^(\s*STEP\s*\d*|\s*\d+.\s*)/i, '');
             } else if(/^(\s*STEP\s*\d*)/i.test(n[i])) {
                 n[i] = '';
@@ -109,7 +136,13 @@ function formatDirections(mealInfo) {
     return formattedDir;
 }
 
+// handling saved meals and local storage
 function addMealToSaved(mealToAdd) {
+    /*
+    This function adds a specified meal to the array 
+    containing any other meals that have been saved by the user
+    and creates an html element to display in the relevant section
+    */
     savedMeals.push(mealToAdd);
     let index = savedMeals.indexOf(mealToAdd);
 
@@ -123,43 +156,6 @@ function addMealToSaved(mealToAdd) {
     `;
     
 }
-async function fillMealsOnLoad(mealsList) {
-    for(let i = 0; i < mealsList.length; i++) {
-        let meal = await findMealInfo('id', mealsList[i][0]);
-        addMealToSaved(meal);
-    }
-}
-async function findMealInfo(searchType, str) {
-    let info = [];
-    let resp = '';
-
-    if(str === undefined && searchType !== 'random') {
-        console.log('no str defined, defaulting to random search');
-        searchType = 'random';
-    }
-    switch(searchType) {
-        case 'id':
-            resp = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${str}`);
-            break;
-        case 'name':
-            resp = await fetch(`www.themealdb.com/api/json/v1/1/search.php?s=${str}`);
-            break;
-        case 'random':
-            resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
-            break;
-        default:    // random search
-            resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
-            break;
-    }
-
-    // let resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
-    // let resp = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=Fish+Fofos');
-
-    info = resp.json();
-
-    return info;
-}
-
 function addToLocalStorage(toSave) {
     let allInfo = [];
     for(let i = 0; i < toSave.length; i++) {
@@ -174,7 +170,49 @@ function getFromLocalStorage() {
     return stored === null ? [] : stored;
 }
 
+
+async function fillMealsOnLoad(mealsList) {
+    for(let i = 0; i < mealsList.length; i++) {
+        // let meal = await findMealInfo('id', mealsList[i][0]);
+        // addMealToSaved(meal);
+        let meal = await findMealInfo('id', mealsList[i][0], true);
+    }
+}
+async function findMealInfo(searchType, str, shouldAddToSaved) {
+    let info = [];
+    let resp = '';
+    let urlToFetch = 'https://www.themealdb.com/api/json/v1/1/random.php';
+
+    if(str === undefined && searchType !== 'random') {
+        searchType = 'random';
+    }
+    switch(searchType) {
+        case 'id':
+            urlToFetch = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${str}`;
+            break;
+        case 'name':
+            urlToFetch = `https://www.themealdb.com/api/json/v1/1/search.php?s=${str}`;
+            break;
+        default:
+            urlToFetch = `https://www.themealdb.com/api/json/v1/1/random.php`;
+            break;
+    }
+    resp = fetch(urlToFetch).then(response => response.json()).then((json) => {
+
+        addMealToSaved(json);
+    });
+    // info = resp.json();
+    // return info;
+}
+
+// fetching and displaying filter options
 async function initializeFilters() {
+    /*
+    This function fetches all filters available
+    from the MealDB API and places them in
+    a 2d array and finally passes each sub array
+    to the displayFilters function to be displayed
+    */
     let categList = fetch(`https://www.themealdb.com/api/json/v1/1/list.php?c=list`)
         .then(response => response.json())
         .then((json) => {
@@ -192,11 +230,16 @@ async function initializeFilters() {
         .then((json) => {
             filters[2] = json;
             displayFilters(filters[2].meals, filterRegion, 'strArea');
-            findMealsByFilters(0);
+            // findMealsByFilters(0);
         });
 }
-
 function displayFilters(from, toElement, strValue) {
+    /*
+    This function creates html elements 
+    for each of the values present in the from array 
+    by concatenating to a string and
+    setting the inner html of the specified element to that string
+    */
     let strTemp = '';
     for(let i = 0; i < from.length; i++) {
         strTemp += `
@@ -207,36 +250,16 @@ function displayFilters(from, toElement, strValue) {
     }
     toElement.innerHTML = strTemp;
 }
-function findMealsByFilters(filterType) {
-    let letter = 'c';
-    switch (filterType) {
-        case 0:         letter = 'c';      break;
-        case 1:         letter = 'i';      break;
-        case 2:         letter = 'a';      break;
-        default:        letter = 'c';      break;
-    }
 
-    let resp = fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?${letter}=${activeFilter[filterType]}`)
-        .then(response => response.json())
-        .then((json) => {
-            if(json.meals !== null) {
-                console.log(json);
-                let r = [
-                    Math.floor(Math.random() * json.meals.length), 
-                    Math.floor(Math.random() * json.meals.length), 
-                    Math.floor(Math.random() * json.meals.length)
-                ];
-                displayNonSavedMeal('random', json.meals[r[0]]);
-                displayNonSavedMeal(filterType, json.meals[r[1]]);
-                displayNonSavedMeal(filterType, json.meals[r[2]]);
-            } else {
-
-            }
-
-        });
-}
-
+// selecting filter and refreshing filtered results
 function selectFilter(selectedFilter) {
+    /*
+    This function is called by the displayed filters
+    on click which passes itself
+    and toggles the relevant selected class before checking
+    whether the element should be added or removed from the active filter array
+    and finally calls the function to reload the displayed filtered recipes
+    */
     selectedFilter.classList.toggle('selected-filter');
     let whichType = 0;
 
@@ -255,37 +278,65 @@ function selectFilter(selectedFilter) {
         whichType = 2;
     }
 
-    findMealsByFilters(whichType);
+    clearFilterSection(randomFilteredC);
+    loadMealsByFilter(3, whichType);
 }
-function displayNonSavedMeal(filterType, meal) {
-    // let elem = randomFilteredC;
-    // switch (filterType) {
-    //     case 0:     elem = randomFilteredC;     break;
-    //     default:    elem = randomFilteredC;     break;
-    // }
+async function loadMealsByFilter(numToLoad, filterType) {
+    /*
+    This function grabs a specified number of meals to display
+    based on the filter type (category/ingredient/region) and 
+    passes each to be displayed,
+    the fetch type defaults to a random meal unless the relevant filter 
+    type array is not empty in which case a meal is fetched using the filter
+    */
+    let letter = 'c';
+    let urlToFetch = 'https://www.themealdb.com/api/json/v1/1/random.php';
+    switch(filterType) {
+        case 1:         letter = 'i';      break;
+        case 2:         letter = 'a';      break;
+        default:        letter = 'c';      break;
+    }
 
-    // if(filterType === 'random' || !filterType) {
-    //     meal = findMealInfo();
-    //     meal = meal.meals[0];        
-    // }
+    if(activeFilter[filterType].length !== 0) {
+        urlToFetch = `https://www.themealdb.com/api/json/v1/1/filter.php?${letter}=${activeFilter[filterType]}`;
+    }
 
+    for(let i = 0; i < numToLoad; i++) {
+        let filteredList = fetch(urlToFetch).then(response => response.json()).then((json) => {
+            displayFilteredMeal(filterType, json.meals[Math.floor(Math.random() * json.meals.length)]);
+        });
+    }
+}
+function displayFilteredMeal(filterType, meal) {
+    /*
+    This function creates the display cards for a 
+    meal passed to it and appends the element 
+    to the relevant html section
+    */
     let str = `
         <div class="search-result">
             <div class="result-img">
-                <img src="{meal.strMealThumb}" alt="">
+                <img src="${meal.strMealThumb}" alt="">
             </div>
             <div class="result-banner">
-                <span class="result-name">{meal.strMeal}</span>
+                <span class="result-name">${meal.strMeal}</span>
                 <span class="result-fav"><i class="fa fa-heart"></i></span>
             </div>
         </div>
     `;
 
     randomFilteredC.innerHTML += str;
-    console.log(meal);
-
+}
+function clearFilterSection(sectionToClear) {
+    /*
+    This function clears the inner html of the
+    specified section
+    */
+    sectionToClear.innerHTML = "";
 }
 
+
+// navbar handlers
 function openNav() {
     sideNav.style.cssText = 'width: 250px;';
 }
