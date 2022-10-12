@@ -8,9 +8,14 @@ const dropdownList = document.querySelector('.dropdown-list');
 const filterCategory = document.querySelector('span.category-list');
 const filterIngredient = document.querySelector('span.ingredient-list');
 const filterRegion = document.querySelector('span.region-list');
-const randomFilteredC = document.querySelector('.category-search-container .filtered-results');
-const randomFilteredI = document.querySelector('.ingredient-list .filtered-results');
-const randomFilteredR = document.querySelector('.region-list .filtered-results');
+const filterSections = [
+    document.querySelector('.category-search-container .filtered-results'),
+    document.querySelector('.ingredient-search-container .filtered-results'),
+    document.querySelector('.region-search-container .filtered-results')
+];
+const filDropdowns = document.querySelectorAll('.show-filter');
+const refreshDisplays = document.querySelectorAll('.refresh-display');
+const containersFilters = document.querySelectorAll('span.filters');
 let filters = [[], [], []];
 let activeFilter = [[], [], []];
 
@@ -25,7 +30,9 @@ window.onload = (e) => {
 
     initializeFilters();
 
-    loadMealsByFilter(3, 0);
+    loadMealsByFilter(3, 0);    // category
+    loadMealsByFilter(3, 1);    // ingredient
+    loadMealsByFilter(3, 2);    // region/area
     // TODO:    add functionality to filters
 }
 
@@ -40,9 +47,13 @@ function showPopup(mealInfo) {
     */
     if(mealInfo === false) {
         popupDisplay.parentElement.parentElement.classList.add('hidden');
+        document.documentElement.style.overflow = 'scroll';
+        document.body.scroll = 'no';
         return;
     }
     
+    document.documentElement.style.overflow = 'hidden';
+    document.body.scroll = 'yes';
     popupDisplay.parentElement.parentElement.classList.remove('hidden');
     popupDisplay.scrollTo(0, 0);
 
@@ -198,8 +209,10 @@ async function findMealInfo(searchType, str, shouldAddToSaved) {
             break;
     }
     resp = fetch(urlToFetch).then(response => response.json()).then((json) => {
-
-        addMealToSaved(json);
+        // addMealToSaved(json);
+        if(shouldAddToSaved) {
+            addMealToSaved(json);
+        }
     });
     // info = resp.json();
     // return info;
@@ -278,7 +291,7 @@ function selectFilter(selectedFilter) {
         whichType = 2;
     }
 
-    clearFilterSection(randomFilteredC);
+    clearFilterSection(filterSections[whichType]);
     loadMealsByFilter(3, whichType);
 }
 async function loadMealsByFilter(numToLoad, filterType) {
@@ -291,6 +304,7 @@ async function loadMealsByFilter(numToLoad, filterType) {
     */
     let letter = 'c';
     let urlToFetch = 'https://www.themealdb.com/api/json/v1/1/random.php';
+
     switch(filterType) {
         case 1:         letter = 'i';      break;
         case 2:         letter = 'a';      break;
@@ -299,13 +313,41 @@ async function loadMealsByFilter(numToLoad, filterType) {
 
     if(activeFilter[filterType].length !== 0) {
         urlToFetch = `https://www.themealdb.com/api/json/v1/1/filter.php?${letter}=${activeFilter[filterType]}`;
+    } else {
+        for(let j = 0; j < numToLoad; j++) {
+            let data = fetch(urlToFetch).then(response => response.json()).then((json) => {
+                if(!json.meals) {
+                    filterSections[filterType].innerHTML = 
+                        `
+                            <p class="no-matches-msg">
+                                No meals matching the filters could be found
+                            </p>
+                        `;
+                    return;
+                }
+                let num = Math.floor(Math.random() * json.meals.length);
+                displayFilteredMeal(filterType, json.meals[(num + j) % json.meals.length]);
+            });            
+        }
+
+        return;
     }
 
-    for(let i = 0; i < numToLoad; i++) {
-        let filteredList = fetch(urlToFetch).then(response => response.json()).then((json) => {
-            displayFilteredMeal(filterType, json.meals[Math.floor(Math.random() * json.meals.length)]);
-        });
-    }
+    let data = fetch(urlToFetch).then(response => response.json()).then((json) => {
+        if(!json.meals) {
+            filterSections[filterType].innerHTML = 
+                `
+                    <p class="no-matches-msg">
+                        No meals matching the filters could be found
+                    </p>
+                `;
+            return;
+        }
+        let num = Math.floor(Math.random() * json.meals.length);
+        for(let i = 0; i < Math.min(numToLoad, json.meals.length); i++) {
+            displayFilteredMeal(filterType, json.meals[(num + i) % json.meals.length]);
+        }
+    });
 }
 function displayFilteredMeal(filterType, meal) {
     /*
@@ -313,19 +355,25 @@ function displayFilteredMeal(filterType, meal) {
     meal passed to it and appends the element 
     to the relevant html section
     */
+    let sectionToUse = filterSections[filterType];
+
     let str = `
-        <div class="search-result">
+        <div class="search-result" onclick="displayPopupByID(${meal.idMeal})">
             <div class="result-img">
                 <img src="${meal.strMealThumb}" alt="">
             </div>
             <div class="result-banner">
                 <span class="result-name">${meal.strMeal}</span>
-                <span class="result-fav"><i class="fa fa-heart"></i></span>
+                <span class="result-fav" onclick="addMealToSavedByID(${meal.idMeal})">
+                <span onclick="changeHeartOnClick(this)">
+                    <i class="far fa-heart"></i>
+                </span>
+                </span>
             </div>
         </div>
     `;
 
-    randomFilteredC.innerHTML += str;
+    sectionToUse.innerHTML += str;
 }
 function clearFilterSection(sectionToClear) {
     /*
@@ -333,6 +381,37 @@ function clearFilterSection(sectionToClear) {
     specified section
     */
     sectionToClear.innerHTML = "";
+}
+async function displayPopupByID(id) {
+    let g = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+    g = g.json();
+
+    showPopup(await g);
+}
+async function addMealToSavedByID(id) {
+    let g = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+    g = g.json();
+
+    addMealToSaved(await g);
+}
+function changeHeartOnClick(str) {
+    console.log(str);
+    console.log(str.childNodes[1]);
+    if(str.childNodes[1].classList.contains('far')) {
+        str.innerHTML = 
+        `
+            <span onclick="changeHeartOnClick(this)">
+                <i class="fa fa-heart"></i>
+            </span>
+        `;
+    } else {
+        str.innerHTML = 
+        `
+            <span onclick="changeHeartOnClick(this)">
+                <i class="far fa-heart"></i>
+            </span>
+        `;
+    }
 }
 
 
@@ -352,4 +431,27 @@ function dropdownMenu() {
 savedListElement.addEventListener('wheel', (e) => {
     e.preventDefault();
     savedListElement.scrollLeft += e.deltaY / 2;
+});
+
+filDropdowns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        btn.parentElement.parentElement.querySelector('.filters').classList.toggle('expanded');
+        console.log('whowhoh');
+    });
+});
+
+refreshDisplays.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        let x;
+        if(btn.parentElement.parentElement.classList.contains('category-search-container')) {
+            x = 0;
+        } else if(btn.parentElement.parentElement.classList.contains('ingredient-search-container')) {
+            x = 1;
+        } else if(btn.parentElement.parentElement.classList.contains('region-search-container')) {
+            x = 2;
+        }
+        clearFilterSection(filterSections[x]);
+        loadMealsByFilter(3, x);
+        // console.log(x);
+    });
 });
