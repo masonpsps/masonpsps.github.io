@@ -51,7 +51,14 @@ function advanceSelectedLetter() {
     letterContainer[currentPosition].classList.add('selected');
 }
 function performBackspace() {
-    
+    letterContainer[currentPosition].textContent = '';
+
+    if(currentPosition % 5 !== 0) {
+        letterContainer[currentPosition].classList.remove('selected');
+        currentPosition--;
+        letterContainer[currentPosition].classList.add('selected');
+        // letterContainer[currentPosition].textContent = '';
+    }
 }
 
 function keyPressHandler(e) {
@@ -64,6 +71,8 @@ function keyPressHandler(e) {
         advanceSelectedLetter();
     } else if(e.key === 'Enter') {
         checkEntryOnEnterKey();
+    } else if(e.key === 'Backspace') {
+        performBackspace();
     }
 }
 
