@@ -81,7 +81,6 @@ function performBackspace() {
         letterContainer[currentPosition].classList.remove('selected');
         currentPosition--;
         letterContainer[currentPosition].classList.add('selected');
-        // letterContainer[currentPosition].textContent = '';
     }
 }
 
