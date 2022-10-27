@@ -21,7 +21,7 @@ const words = [
     "overt",
     "named"
 ]
-let answer = words[2].toUpperCase();
+let answer = words[Math.floor(Math.random() * words.length)].toUpperCase();
 
 const letterContainer = document.querySelector('.letter-container').children;
 let currentPosition = 0;
