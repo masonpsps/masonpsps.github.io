@@ -21,7 +21,7 @@ const words = [
     "overt",
     "named"
 ]
-
+let answer = words[2].toUpperCase();
 
 const letterContainer = document.querySelector('.letter-container').children;
 let currentPosition = 0;
@@ -33,16 +33,40 @@ let guesses = [
     "",
     "",
     ""
-]
+];
 
-function checkEntryOnEnterKey() {
+function submitGuess() {
     if(canBeSubmitted) {
         console.log('submitted');
         canBeSubmitted = false;
 
+        saveGuess();
         advanceSelectedLetter();
     } else {
         console.log('word is not completed');
+    }
+}
+function saveGuess() {
+    let index = Math.floor(currentPosition / 5);
+    let guess = '';
+
+    for(let i = currentPosition - 4; i <= currentPosition; i++) {
+        guess += letterContainer[i].textContent;
+    }
+
+    guesses[index] = guess;
+    checkLettersForMatches(guesses[index]);
+}
+function checkLettersForMatches(wordToCheck) {    
+    for(let i = 0; i < wordToCheck.length; i++) {
+        let charToCheck = wordToCheck.charAt(i);
+        if(answer.indexOf(charToCheck) <= -1) {
+            letterContainer[currentPosition - 4 + i].classList.add('no-match');
+        } else if(answer.indexOf(charToCheck) !== i) {
+            letterContainer[currentPosition - 4 + i].classList.add('partial-correct');
+        } else {
+            letterContainer[currentPosition - 4 + i].classList.add('full-correct');
+        }
     }
 }
 function advanceSelectedLetter() {
@@ -70,7 +94,7 @@ function keyPressHandler(e) {
         }
         advanceSelectedLetter();
     } else if(e.key === 'Enter') {
-        checkEntryOnEnterKey();
+        submitGuess();
     } else if(e.key === 'Backspace') {
         performBackspace();
     }
