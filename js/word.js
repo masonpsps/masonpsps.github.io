@@ -24,6 +24,7 @@ const words = [
 let answer = words[Math.floor(Math.random() * words.length)].toUpperCase();
 
 const letterContainer = document.querySelector('.letter-container').children;
+const keys = document.querySelectorAll('.key');
 let currentPosition = 0;
 let canBeSubmitted = false;
 let guesses = [
@@ -41,7 +42,7 @@ function submitGuess() {
         canBeSubmitted = false;
 
         saveGuess();
-        advanceSelectedLetter();
+        // advanceSelectedLetter();
     } else {
         console.log('word is not completed');
     }
@@ -55,19 +56,42 @@ function saveGuess() {
     }
 
     guesses[index] = guess;
+    checkWordIsReal(guess[index]);
     checkLettersForMatches(guesses[index]);
+}
+function checkWordIsReal(toCheck) {
+    let resp = fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${toCheck}`)
+    .then(response => response.json()).then(json => {
+        if(json[0]) {
+            // word is real
+            console.log('success');
+            checkLettersForMatches(toCheck);
+            advanceSelectedLetter();
+        }
+    });
 }
 function checkLettersForMatches(wordToCheck) {    
     for(let i = 0; i < wordToCheck.length; i++) {
         let charToCheck = wordToCheck.charAt(i);
+        let classToAdd = '';
+        
         if(answer.indexOf(charToCheck) <= -1) {
-            letterContainer[currentPosition - 4 + i].classList.add('no-match');
+            classToAdd = 'no-match';
         } else if(answer.indexOf(charToCheck) !== i) {
-            letterContainer[currentPosition - 4 + i].classList.add('partial-correct');
+            classToAdd = 'partial-correct';
         } else {
-            letterContainer[currentPosition - 4 + i].classList.add('full-correct');
+            classToAdd = 'full-correct';
         }
+        letterContainer[currentPosition - 4 + i].classList.add(classToAdd);
+        changeClassForKeyboardDisplay(charToCheck, classToAdd);
     }
+}
+function changeClassForKeyboardDisplay(whatLetter, whatClass) {
+    keys.forEach(key => {
+        if(key.textContent.toLowerCase() === whatLetter.toLowerCase()) {
+            key.classList.add(whatClass);
+        }
+    });
 }
 function advanceSelectedLetter() {
     letterContainer[currentPosition].classList.remove('selected');
