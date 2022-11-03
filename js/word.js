@@ -1,31 +1,31 @@
-const words = [
-    "heavy",
-    "light",
-    "crane",
-    "shtik",
-    "pools",
-    "stern",
-    "still",
-    "spell",
-    "verse",
-    "words",
-    "quiet",
-    "quite",
-    "brown",
-    "guest",
-    "strip",
-    "avoid",
-    "party",
-    "whole",
-    "untie",
-    "overt",
-    "named"
-]
+// const words = [
+//     "heavy",
+//     "light",
+//     "crane",
+//     "shtik",
+//     "pools",
+//     "stern",
+//     "still",
+//     "spell",
+//     "verse",
+//     "words",
+//     "quiet",
+//     "quite",
+//     "brown",
+//     "guest",
+//     "strip",
+//     "avoid",
+//     "party",
+//     "whole",
+//     "untie",
+//     "overt",
+//     "named"
+// ]
 // let answer = words[Math.floor(Math.random() * words.length)].toUpperCase();
-let answer = findRandomWord();
 
 const letterContainer = document.querySelector('.letter-container').children;
 const keys = document.querySelectorAll('.key');
+let answer = findRandomWord();
 let currentPosition = 0;
 let canBeSubmitted = false;
 let guesses = [
@@ -57,7 +57,7 @@ function saveGuess() {
     }
 
     guesses[index] = guess;
-    checkWordIsReal(guess[index]);
+    checkWordIsReal(guesses[index]);
     checkLettersForMatches(guesses[index]);
 }
 function checkWordIsReal(toCheck) {
