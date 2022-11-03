@@ -21,7 +21,8 @@ const words = [
     "overt",
     "named"
 ]
-let answer = words[Math.floor(Math.random() * words.length)].toUpperCase();
+// let answer = words[Math.floor(Math.random() * words.length)].toUpperCase();
+let answer = findRandomWord();
 
 const letterContainer = document.querySelector('.letter-container').children;
 const keys = document.querySelectorAll('.key');
@@ -109,6 +110,9 @@ function performBackspace() {
 }
 
 function keyPressHandler(e) {
+
+    console.log(answer);
+
     if(e.key && e.key.length <= 1) {
         letterContainer[currentPosition].textContent = e.key.toUpperCase();
         if(currentPosition % 5 === 4) {
@@ -124,3 +128,15 @@ function keyPressHandler(e) {
 }
 
 window.addEventListener('keydown', keyPressHandler);
+
+function findRandomWord() {
+    let x = fetch('https://random-word-api.herokuapp.com/word?length=5')
+    .then(response => response.json()).then(json => {
+        console.log(json);
+        answer = json;
+        return json;
+    });
+    // x = x.json();
+
+    
+}
