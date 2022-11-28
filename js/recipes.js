@@ -65,6 +65,8 @@ function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4)) 
         `;
     }
     sectionToDisplay.innerHTML += str;
+
+    console.log(filterMeals('strIngredient', 'Olive Oil'));
 }
 function randomIndices(howMany = 3, max = pulledMeals[0].length) {
     const arr = [];
@@ -73,6 +75,25 @@ function randomIndices(howMany = 3, max = pulledMeals[0].length) {
     }
 
     return arr;
+}
+function filterMeals(whatProperty, lookingFor) {
+    lookingFor = lookingFor.toLowerCase();
+    if(whatProperty === 'strIngredient') {
+        const filtered = pulledMeals[0].filter(meal => {
+            for(let i = 0; i < 21; i++) {
+                let str = meal['strIngredient' + i];
+                if(str && str.toLowerCase() === lookingFor) {
+                    i = 21;
+                    return true;
+                }
+            }
+        });
+        return filtered;
+    }
+    const filtered = pulledMeals[0].filter(meal => {
+        return meal[whatProperty].toLowerCase() === lookingFor;
+    });
+    return filtered;
 }
 
 function displayPopup(index) {
