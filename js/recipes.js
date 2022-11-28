@@ -1,4 +1,5 @@
-// const savedMeals = localStorage.getItem(JSON.parse('savedMeals')) || [];
+const savedMeals = JSON.parse(localStorage.getItem('savedMeals')) || [];
+const pulledMeals = [];
 
 const savedMealsListEl = document.querySelector('ul.saved');
 const popupDisplay = document.querySelector('.popup-content');
@@ -15,10 +16,8 @@ const regionSection = document.querySelector('.region-search-container .filtered
 const filterDropdowns = document.querySelectorAll('.show-filter');
 const refreshDisplays = document.querySelectorAll('.refresh-display');
 const containersFilters = document.querySelectorAll('span.filters');
-let filters = [[], [], []];
-let activeFilter = [[], [], []];
-
-const pulledMeals = [];
+// let filters = [[], [], []];
+// let activeFilter = [[], [], []];
 
 function findAllMeals() {
     const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
