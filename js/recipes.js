@@ -40,7 +40,33 @@ function findAllMeals() {
     }
     Promise.all(fetches).then(() => {
         pulledMeals.push(result.flat());
+        console.log(pulledMeals.flat());
+        displayMealSection(categorySection, [1, 2, 3]);
     });        
 }
 
+function displayMealSection(sectionToDisplay, indicesToShow) {
+    let str = '';
+    for(let i = 0; i < indicesToShow.length; i++) {
+        let random = Math.floor(Math.random() * pulledMeals[0].length);
+        str += `
+            <div class="search-result" onclick="displayPopupByID(${pulledMeals[0][random].idMeal})">
+                <div class="result-img">
+                    <img src="${pulledMeals[0][random].strMealThumb}" alt="">
+                </div>
+                <div class="result-banner">
+                    <span class="result-name">${pulledMeals[0][random].strMeal}</span>
+                    <span class="result-fav" onclick="addMealToSavedByID(${pulledMeals[0][random].idMeal})">
+                    <span onclick="changeHeartOnClick(this)">
+                        <i class="far fa-heart"></i>
+                    </span>
+                    </span>
+                </div>
+            </div>
+        `;
+    }
+    sectionToDisplay.innerHTML += str;
+}
+
 findAllMeals();
+// displayMealSection(categorySection, [1, 2, 3]);
