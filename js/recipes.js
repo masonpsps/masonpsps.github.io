@@ -16,8 +16,6 @@ const regionSection = document.querySelector('.region-search-container .filtered
 const filterDropdowns = document.querySelectorAll('.show-filter');
 const refreshDisplays = document.querySelectorAll('.refresh-display');
 const containersFilters = document.querySelectorAll('span.filters');
-// let filters = [[], [], []];
-// let activeFilter = [[], [], []];
 
 function findAllMeals() {
     const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -54,14 +52,20 @@ function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4)) 
                 </div>
                 <div class="result-banner">
                     <span class="result-name">${pulledMeals[0][indicesToShow[i]].strMeal}</span>
-                    <span class="result-fav" onclick="addMealToSavedByID(${pulledMeals[0][indicesToShow[i]].idMeal})">
-                    <span onclick="changeHeartOnClick(this)">
+                    <span 
+                        onclick="
+                            addMealToSaved(${pulledMeals[0][indicesToShow[i]].idMeal}, this); 
+                            event.stopPropagation();
+                        "
+                        class="result-fav" 
+                    >
                         <i class="far fa-heart"></i>
-                    </span>
                     </span>
                 </div>
             </div>
         `;
+        // event.stopPropagation() stops the displayPopup onclick firing when the heart is clicked
+        //      so only gets saved, no popup
     }
     sectionToDisplay.innerHTML += str;
 
@@ -98,22 +102,18 @@ function filterMeals(whatProperty, lookingFor) {
 function displayPopup(index) {
     if(!index) {
         popupDisplay.parentElement.parentElement.classList.add('hidden');
-        // document.documentElement.style.overflow = 'scroll';
-        // document.body.scroll = 'no';
         return;
     }
     
     popupDisplay.parentElement.parentElement.classList.remove('hidden');
     popupDisplay.scrollTo(0, 0);
-    // document.documentElement.style.overflow = 'hidden';
-    // document.body.scroll = 'yes';
 
     const meal = pulledMeals[0][index];
     const measuredIngredients = getIngredientsWithMeasurements(meal);
     const formattedDirections = formatDirections(meal);
 
     popupDisplay.innerHTML = `
-        <div class="close-popup" onclick="displayPopupByIndex(false)"><i class="fa fa-close"></i></div>
+        <div class="close-popup" onclick="displayPopup(false)"><i class="fa fa-close"></i></div>
         <div class="img-title-wrapper">
             <div class="popup-img"><img src="${meal.strMealThumb}" alt="img"></div>
             <div class="popup-title">${meal.strMeal}</div>
@@ -195,6 +195,28 @@ function formatDirections(meal) {
         }
     }    
     return formattedDir;
+}
+
+function addMealToSaved(id, element) {
+    // check if meal is already saved in savedMeals and add isSaved property to it in pulledMeals
+    const isPresent = savedMeals.some(item => item === id);
+    isPresent 
+        ? savedMeals.splice(savedMeals.indexOf(id), 1)
+        : savedMeals.push(id);
+
+    const selectedMeal = pulledMeals[0].find(meal => meal.idMeal === id.toString());
+    selectedMeal.isSaved = isPresent;
+
+    // change heart between filled and outline
+    const el = element.children[0];
+    
+    if(el.classList.contains('far')) {
+        el.classList.remove('far');
+        el.classList.add('fa');
+    } else {
+        el.classList.remove('fa');
+        el.classList.add('far');
+    }
 }
 
 findAllMeals();
