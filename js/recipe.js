@@ -436,7 +436,6 @@ savedListElement.addEventListener('wheel', (e) => {
 filDropdowns.forEach((btn) => {
     btn.addEventListener('click', () => {
         btn.parentElement.parentElement.querySelector('.filters').classList.toggle('expanded');
-        console.log('whowhoh');
     });
 });
 

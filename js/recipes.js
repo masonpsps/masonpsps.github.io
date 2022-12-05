@@ -1,4 +1,4 @@
-const savedMeals = JSON.parse(localStorage.getItem('savedMeals')) || [];
+const savedMeals = JSON.parse(localStorage.getItem('savedMeals')) || ["52777", "52827"];
 const pulledMeals = [];
 
 const savedMealsListEl = document.querySelector('ul.saved');
@@ -16,6 +16,30 @@ const regionSection = document.querySelector('.region-search-container .filtered
 const filterDropdowns = document.querySelectorAll('.show-filter');
 const refreshDisplays = document.querySelectorAll('.refresh-display');
 const containersFilters = document.querySelectorAll('span.filters');
+const filters = {
+    ingredientsFilters: [
+        "Chicken",
+        "Beef",
+        "Pork",
+        "Salmon",
+        "Pasta",
+        "Rice",
+        "Beans",
+        "Cheese",
+        "Mushroom",
+        "Chocolate",
+        "Curry Powder",
+        "Eggplant",
+        "Egg",
+        "Olive Oil",
+        "Lentils",
+        "Potato",
+        "Yogurt",
+        "Sausage",
+        "Peanut"
+    ],
+};
+const filterDisplays = [filterCategory, filterIngredient, filterRegion];
 
 function findAllMeals() {
     const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -39,7 +63,29 @@ function findAllMeals() {
         pulledMeals.push(result.flat());
         console.log(pulledMeals.flat());
         displayMealSection(categorySection);
+        displayMealSection(ingredientSection);
+        displayMealSection(regionSection);
+        displaySavedMeals();
+        populateFilters(filters);
     });        
+}
+
+function populateFilters(filter) {
+    const catArray = pulledMeals[0].map(item => item.strCategory);
+    const areaArray = pulledMeals[0].map(item => item.strArea);
+    [filter.categoryFilters, filter.areaFilters] = [[...new Set(catArray)], [...new Set(areaArray)]];
+    // console.log(filter);
+    for(let i = 0; i < Object.values(filter).length; i++) {
+        let location = filterDisplays[i] || filterCategory;
+        // console.log(i);
+        for(let j = 0; j < Object.values(filter)[i].length; j++) {
+            location.innerHTML += `
+                <div class="filter-item" onclick="selectFilter(this)">
+                    ${Object.values(filter)[i][j]}
+                </div>
+            `;
+        }
+    }
 }
 
 function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4)) {
@@ -95,6 +141,17 @@ function filterMeals(whatProperty, lookingFor) {
         return meal[whatProperty].toLowerCase() === lookingFor;
     });
     return filtered;
+}
+
+function displaySavedMeals() {
+    const arr = pulledMeals[0].filter(item => 
+        savedMeals.some(id => 
+            item.idMeal === id.toString()
+        )
+    );
+
+    // console.log(arr);
+    // console.log(savedMeals);
 }
 
 function displayPopup(index) {
@@ -214,5 +271,11 @@ function addMealToSaved(id, element) {
         el.classList.add('far');
     }
 }
+
+filterDropdowns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        btn.parentElement.parentElement.querySelector('.filters').classList.toggle('expanded');
+    });
+});
 
 findAllMeals();
