@@ -17,6 +17,7 @@ const filterDropdowns = document.querySelectorAll('.show-filter');
 const refreshDisplays = document.querySelectorAll('.refresh-display');
 const containersFilters = document.querySelectorAll('span.filters');
 const filters = {
+    categoryFilters: [],
     ingredientsFilters: [
         "Chicken",
         "Beef",
@@ -38,11 +39,12 @@ const filters = {
         "Sausage",
         "Peanut"
     ],
+    areaFilters: []
 };
 const activeFilters = {
-    activeCategory: "Dessert",
-    activeIngredient: "Chicken",
-    activeArea: "Greek"
+    activeCategory: "",
+    activeIngredient: "",
+    activeArea: ""
 };
 const filteredPools = {
     category: [],
@@ -84,8 +86,7 @@ function populateFilters(filter) {
     const areaArray = pulledMeals[0].map(item => item.strArea);
     [filter.categoryFilters, filter.areaFilters] = [[...new Set(catArray)], [...new Set(areaArray)]];
     for(let i = 0; i < Object.values(filter).length; i++) {
-        let location = filterDisplays[i] || filterCategory;
-        // console.log(i);
+        let location = filterDisplays[i];
         for(let j = 0; j < Object.values(filter)[i].length; j++) {
             location.innerHTML += `
                 <div class="filter-item" onclick="selectFilter(this)">
@@ -134,7 +135,7 @@ function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4), 
         // event.stopPropagation() stops the displayPopup onclick firing when the heart is clicked
         //      so only gets saved, no popup
     }
-    sectionToDisplay.innerHTML += str;
+    sectionToDisplay.innerHTML = str;
 }
 function randomIndices(howMany = 3, max = pulledMeals[0].length) {
     const arr = [];
@@ -145,6 +146,8 @@ function randomIndices(howMany = 3, max = pulledMeals[0].length) {
     return arr;
 }
 function filterMeals(whatProperty, lookingFor) {
+    if(!lookingFor) return pulledMeals[0];
+
     lookingFor = lookingFor.toLowerCase();
     if(whatProperty === 'strIngredient') {
         const filtered = pulledMeals[0].filter(meal => {
@@ -302,7 +305,12 @@ function addMealToSaved(id, element) {
     }
 }
 
-function updateFilters() {
+function updateFilters(section) { 
+    if(section) {
+        displayMealSection(section);
+        return;
+    }
+
     filteredPools.category = filterMeals("strCategory", activeFilters.activeCategory);
     filteredPools.ingredient = filterMeals("strIngredient", activeFilters.activeIngredient);
     filteredPools.area = filterMeals("strArea", activeFilters.activeArea);
@@ -310,6 +318,35 @@ function updateFilters() {
     displayMealSection(categorySection);
     displayMealSection(ingredientSection);
     displayMealSection(regionSection);
+}
+
+function selectFilter(selected) {
+    selected.classList.toggle('selected-filter');
+    if(selected.parentElement.classList.contains('ingredient-list')) {
+        if(selected.classList.contains('selected-filter')) {
+            activeFilters.activeIngredient = selected.textContent.trim();
+        } else {
+            activeFilters.activeIngredient = '';
+        }
+        filteredPools.ingredient = filterMeals("strIngredient", activeFilters.activeIngredient);
+        updateFilters(ingredientSection);
+    } else if(selected.parentElement.classList.contains('region-list')) {
+        if(selected.classList.contains('selected-filter')) {
+            activeFilters.activeArea = selected.textContent.trim();
+        } else {
+            activeFilters.activeArea = '';
+        }    
+        filteredPools.area = filterMeals("strArea", activeFilters.activeArea);
+        updateFilters(regionSection);
+    } else if(selected.parentElement.classList.contains('category-list')) {
+        if(selected.classList.contains('selected-filter')) {
+            activeFilters.activeCategory = selected.textContent.trim();
+        } else {
+            activeFilters.activeCategory = '';
+        }
+        filteredPools.category = filterMeals("strCategory", activeFilters.activeCategory);
+        updateFilters(categorySection);
+    }
 }
 
 function refreshSection(sectionToRefresh) {
