@@ -1,4 +1,4 @@
-const savedMeals = JSON.parse(localStorage.getItem('savedMeals')) || ["52777", "52827"];
+const savedMeals = JSON.parse(localStorage.getItem('savedMeals')) || [];
 const pulledMeals = [];
 
 const savedMealsListEl = document.querySelector('ul.saved');
@@ -74,7 +74,6 @@ function populateFilters(filter) {
     const catArray = pulledMeals[0].map(item => item.strCategory);
     const areaArray = pulledMeals[0].map(item => item.strArea);
     [filter.categoryFilters, filter.areaFilters] = [[...new Set(catArray)], [...new Set(areaArray)]];
-    // console.log(filter);
     for(let i = 0; i < Object.values(filter).length; i++) {
         let location = filterDisplays[i] || filterCategory;
         // console.log(i);
@@ -248,12 +247,12 @@ function formatDirections(meal) {
     const unformatted = meal.strInstructions;
     let dir = unformatted.split(/\r\n/g);
     let formattedDir = '';
-    console.log(dir);
+    // console.log(dir);
     dir = dir.filter(item => {
         item = item.replace(stepSpaceNumberRegex, '');
         return item !== '' && item !== ' ';
     });
-    console.log(dir);
+    // console.log(dir);
     for(let i = 0; i < dir.length; i++) {
         formattedDir += `
             <p class="direction-step">Step ${i + 1}</p>
@@ -283,6 +282,12 @@ function addMealToSaved(id, element) {
         el.classList.remove('fa');
         el.classList.add('far');
     }
+}
+
+function refreshSection(sectionToRefresh) {
+    const section = sectionToRefresh.parentElement.parentElement.querySelector('.filtered-results');
+    section.innerHTML = '';
+    displayMealSection(section);
 }
 
 filterDropdowns.forEach((btn) => {
