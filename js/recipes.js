@@ -91,6 +91,10 @@ function populateFilters(filter) {
 function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4)) {
     let str = '';
     for(let i = 0; i < indicesToShow.length; i++) {
+        const item = pulledMeals[0][indicesToShow[i]];
+        const heart = (savedMeals.some(id => item.idMeal === id.toString()))
+            ? 'far fa-heart' 
+            : 'fa fa-heart';
         str += `
             <div class="search-result" onclick="displayPopup(${indicesToShow[i]})">
                 <div class="result-img">
@@ -105,7 +109,7 @@ function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4)) 
                         "
                         class="result-fav" 
                     >
-                        <i class="far fa-heart"></i>
+                        <i class="${heart}"></i>
                     </span>
                 </div>
             </div>
@@ -150,8 +154,17 @@ function displaySavedMeals() {
         )
     );
 
-    // console.log(arr);
-    // console.log(savedMeals);
+    arr.forEach(item => {
+        const index = pulledMeals[0].indexOf(item);
+        savedMealsListEl.innerHTML += `
+            <li onclick="displayPopup(${index})">
+                <div class="saved-preview">
+                    <img src="${item.strMealThumb}" alt="img">
+                </div>
+                <p class="saved-name">${item.strMeal}</p>
+            </li>
+        `;
+    });
 }
 
 function displayPopup(index) {
