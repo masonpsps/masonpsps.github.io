@@ -39,6 +39,16 @@ const filters = {
         "Peanut"
     ],
 };
+const activeFilters = {
+    activeCategory: "Dessert",
+    activeIngredient: "Chicken",
+    activeArea: "Greek"
+};
+const filteredPools = {
+    category: [],
+    ingredient: [],
+    area: []
+}
 const filterDisplays = [filterCategory, filterIngredient, filterRegion];
 
 function findAllMeals() {
@@ -62,11 +72,10 @@ function findAllMeals() {
     Promise.all(fetches).then(() => {
         pulledMeals.push(result.flat());
         console.log(pulledMeals.flat());
-        displayMealSection(categorySection);
-        displayMealSection(ingredientSection);
-        displayMealSection(regionSection);
+        updateFilters();
         displaySavedMeals();
         populateFilters(filters);
+        console.log(activeFilters);
     });        
 }
 
@@ -89,21 +98,30 @@ function populateFilters(filter) {
 
 function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4), fromWhere = pulledMeals[0]) {
     let str = '';
+    if(sectionToDisplay == categorySection) {
+        fromWhere = filteredPools.category;
+    } else if(sectionToDisplay == ingredientSection) {
+        fromWhere = filteredPools.ingredient;
+    } else if(sectionToDisplay == regionSection) {
+        fromWhere = filteredPools.area;
+    }
+    indicesToShow = randomIndices(4, fromWhere.length);
+    
     for(let i = 0; i < indicesToShow.length; i++) {
-        const item = pulledMeals[0][indicesToShow[i]];
+        const item = fromWhere[indicesToShow[i]];
         const heart = (savedMeals.some(id => item.idMeal === id.toString()))
             ? 'fa fa-heart' 
             : 'far fa-heart';
         str += `
             <div class="search-result" onclick="displayPopup(${indicesToShow[i]})">
                 <div class="result-img">
-                    <img src="${pulledMeals[0][indicesToShow[i]].strMealThumb}" alt="">
+                    <img src="${item.strMealThumb}" alt="">
                 </div>
                 <div class="result-banner">
-                    <span class="result-name">${pulledMeals[0][indicesToShow[i]].strMeal}</span>
+                    <span class="result-name">${item.strMeal}</span>
                     <span 
                         onclick="
-                            addMealToSaved(${pulledMeals[0][indicesToShow[i]].idMeal}, this); 
+                            addMealToSaved(${item.idMeal}, this); 
                             event.stopPropagation();
                         "
                         class="result-fav" 
@@ -282,6 +300,16 @@ function addMealToSaved(id, element) {
         el.classList.remove('fa');
         el.classList.add('far');
     }
+}
+
+function updateFilters() {
+    filteredPools.category = filterMeals("strCategory", activeFilters.activeCategory);
+    filteredPools.ingredient = filterMeals("strIngredient", activeFilters.activeIngredient);
+    filteredPools.area = filterMeals("strArea", activeFilters.activeArea);
+
+    displayMealSection(categorySection);
+    displayMealSection(ingredientSection);
+    displayMealSection(regionSection);
 }
 
 function refreshSection(sectionToRefresh) {
