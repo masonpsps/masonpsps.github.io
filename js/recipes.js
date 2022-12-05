@@ -87,13 +87,13 @@ function populateFilters(filter) {
     }
 }
 
-function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4)) {
+function displayMealSection(sectionToDisplay, indicesToShow = randomIndices(4), fromWhere = pulledMeals[0]) {
     let str = '';
     for(let i = 0; i < indicesToShow.length; i++) {
         const item = pulledMeals[0][indicesToShow[i]];
         const heart = (savedMeals.some(id => item.idMeal === id.toString()))
-            ? 'far fa-heart' 
-            : 'fa fa-heart';
+            ? 'fa fa-heart' 
+            : 'far fa-heart';
         str += `
             <div class="search-result" onclick="displayPopup(${indicesToShow[i]})">
                 <div class="result-img">
